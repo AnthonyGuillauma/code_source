@@ -1,0 +1,10 @@
+# Environnement virtuel
+.venv/
+
+# Fichiers propres à Python
+*.pyc
+__pycache__/
+
+# Fichiers propres à Python
+.vscode/
+.idea/
