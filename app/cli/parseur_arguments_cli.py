@@ -44,8 +44,6 @@ class ParseurArgumentsCLI(ArgumentParser):
         # Analyse des arguments
         try:
             arguments_parses = super().parse_args(args, namespace)
-        except Exception as ex: #Erreurs liées au parsing
-            raise ArgumentCLIException(str(ex)) from ex
         except SystemExit as ex: #Arguments inconnus
             raise ArgumentCLIException() from ex
 
