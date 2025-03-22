@@ -36,7 +36,29 @@ sorties_valides = [
     "C:/Users/fest/fichier.json"
 ]
 
+arguments_invalides = [
+    ["fichier.txt", "-s"],
+    ["fichier.txt", "-f", "inutile"],
+    ["fichier.txt", "--faux", "inutile"],
+    ["fichier.txt", "--faux", "inutile", "-d"],
+]
+
 # Tests unitaires
+
+@pytest.mark.parametrize("arguments", arguments_invalides)
+def test_exception_argument_inconnu(parseur_arguments_cli, arguments):
+    """
+    Vérifie qu'une erreur est retournée lorsque un argument est passé en CLI et qu'il
+    n'est pas reconnu.
+    Args:
+        parseur_arguments_cli (ParseurArgumentsCLI): Fixture pour l'instance 
+            de la classe ParseurArgumentsCLI.
+        chemin_log (str): Un chemin de fichier valide.
+    Returns:
+        None
+    """
+    with pytest.raises(ArgumentCLIException):
+        arguments = parseur_arguments_cli.parse_args(args=arguments)
 
 @pytest.mark.parametrize("chemin_log", chemins_valides)
 def test_recuperation_chemin_log_valide(parseur_arguments_cli, chemin_log):
