@@ -3,6 +3,7 @@ Point d'entrée de l'application LogBuster !
 """
 
 import colorama
+from cli.parseur_arguments_cli import ParseurArgumentsCLI, ArgumentCLIException
 
 
 if __name__ == "__main__":
@@ -19,3 +20,12 @@ if __name__ == "__main__":
  `------'      `-----'   `------'  `------'   `-----'     `-----'    `--'   `------'`--' '--''--' 
             
           """)
+    try:
+        # Récupération des arguments
+        parseur_cli = ParseurArgumentsCLI()
+        arguments_cli = parseur_cli.parse_args()
+        # Analyse syntaxique du fichier log
+        # Analyse statistique du fichier log
+        # Exportation de l'analyse
+    except ArgumentCLIException as ex:
+        print(f"Erreur dans les arguments fournis !\n {ex}")
