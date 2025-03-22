@@ -21,3 +21,18 @@ class FichierLogApache:
             None
         """
         self.entrees.append(entree)
+
+
+
+class EntreeLogApache:
+    """
+    Représente une entrée dans un fichier de log Apache.
+    """
+    def __init__(self, 
+                 informations_client,
+                 informations_requete,
+                 informations_reponse
+                 ):
+        self.client = informations_client
+        self.requete = informations_requete
+        self.reponse = informations_reponse
