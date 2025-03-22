@@ -48,7 +48,7 @@ class ParseurArgumentsCLI(ArgumentParser):
             raise ArgumentCLIException(str(ex)) from ex
 
         # Vérification syntaxique des arguments
-        regex_chemin = r"^[a-zA-Z0-9_\\\-.\/]+$"
+        regex_chemin = r"^[a-zA-Z0-9:_\\\-.\/]+$"
         if not match(regex_chemin, arguments_parses.chemin_log):
             raise ArgumentCLIException(
                 "Le chemin du fichier log doit uniquement contenir les caractères autorisés. "
