@@ -13,7 +13,7 @@ class ParseurArgumentsCLI(ArgumentParser):
 
     def __init__(self):
         super().__init__(
-            description="LogBuster, l'analyseur de log Apache.", allow_abbrev=False
+            description="LogBuster, l'analyseur de log Apache.", allow_abbrev=False,
         )
         self.__set_arguments()
 
@@ -44,8 +44,10 @@ class ParseurArgumentsCLI(ArgumentParser):
         # Analyse des arguments
         try:
             arguments_parses = super().parse_args(args, namespace)
-        except Exception as ex:
+        except Exception as ex: #Erreurs liées au parsing
             raise ArgumentCLIException(str(ex)) from ex
+        except SystemExit as ex: #Arguments inconnus
+            raise ArgumentCLIException() from ex
 
         # Vérification syntaxique des arguments
         regex_chemin = r"^[a-zA-Z0-9:_\\\-.\/]+$"
