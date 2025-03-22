@@ -8,3 +8,10 @@ __pycache__/
 # Fichiers propres à Python
 .vscode/
 .idea/
+
+# Fichiers propres à Pytest
+.pytest_cache/
+
+# Fichiers propres à Coverage
+.coverage/
+htmlcov/
