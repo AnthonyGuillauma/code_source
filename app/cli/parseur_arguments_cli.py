@@ -3,7 +3,7 @@ Module pour analyser les arguments passés en ligne de commande.
 """
 
 from argparse import ArgumentParser
-
+from re import match
 
 class ParseurArgumentsCLI(ArgumentParser):
     """
@@ -48,6 +48,19 @@ class ParseurArgumentsCLI(ArgumentParser):
             raise ArgumentCLIException(str(ex)) from ex
 
         # Vérification syntaxique des arguments
+        regex_chemin = r"^[a-zA-Z0-9_\\\-.\/]+$"
+        if not match(regex_chemin, arguments_parses.chemin_log):
+            raise ArgumentCLIException(
+                "Le chemin du fichier log doit uniquement contenir les caractères autorisés. "
+                "Les caractères autorisés sont les minuscules, majuscules, chiffres ou les "
+                "caractères spéciaux suivants: _, \\, -, /."
+            )
+        if not match(regex_chemin, arguments_parses.sortie):
+            raise ArgumentCLIException(
+                "Le chemin du fichier de sortie doit uniquement contenir les caractères "
+                "autorisés. Les caractères autorisés sont les minuscules, majuscules, "
+                "chiffres ou les caractères spéciaux suivants: _, \\, -, /."
+            )
         if not arguments_parses.sortie.endswith(".json"):
             raise ArgumentCLIException(
                 "Le fichier de sortie doit obligatoirement être un fichier au format json."
