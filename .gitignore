@@ -13,5 +13,5 @@ __pycache__/
 .pytest_cache/
 
 # Fichiers propres à Coverage
-.coverage/
+.coverage
 htmlcov/
