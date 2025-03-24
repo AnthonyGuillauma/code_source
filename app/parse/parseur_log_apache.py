@@ -23,7 +23,7 @@ class ParseurLogApache():
         r'(?P<ip>\S+) (?P<rfc>\S+) (?P<utilisateur>\S+)'
         r' (\[(?P<horodatage>.+?)\]|-) "((?P<methode>\S+) (?P<url>\S+) (?P<protocole>\S+)|-)"'
         r' (?P<code_status>\d+) (?P<taille_octets>\d+|-)'
-        r'( "(?P<ancienne_url>.*?)" "(?P<agent_utilisateur>.*?)")?'
+        r'( "(?P<ancienne_url>.*?)")?( "(?P<agent_utilisateur>.*?)")?'
     )
 
     def __init__(self, chemin_log):
