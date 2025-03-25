@@ -5,6 +5,7 @@ Module relatif aux informations d'un client dans un fichier de log Apache.
 from dataclasses import dataclass
 from typing import Optional
 
+
 @dataclass
 class ClientInformations:
     """
@@ -14,8 +15,7 @@ class ClientInformations:
     qui concernent le client ayant effectué la requête au serveur Apache.
 
     Attributes:
-        adresse_ip (Optional[str]): L'adresse IP du client. 
-            Peut être None si non fournie.
+        adresse_ip (str): L'adresse IP du client.
         identifiant_rfc (Optional[str]): L'identifiant RFC du client. 
             Peut être None si non fournie.
         nom_utilisateur (Optional[str]): Le nom de l'utilisateur authentifié. 
@@ -26,15 +26,15 @@ class ClientInformations:
     Raises:
         TypeError: Si les attributs ne sont pas de type `str` ou `None`.
     """
-    adresse_ip: Optional[str]
+    adresse_ip: str
     identifiant_rfc: Optional[str]
     nom_utilisateur: Optional[str]
     agent_utilisateur: Optional[str]
 
     def __post_init__(self):
         # Validation de l'adresse IP
-        if self.adresse_ip != None and not isinstance(self.adresse_ip, str):
-            raise TypeError("L'adresse IP doit être une chaîne de caractères ou None.")
+        if not isinstance(self.adresse_ip, str):
+            raise TypeError("L'adresse IP est obligatoire et doit être une chaîne de caractères.")
         # Validation de l'identifiant RFC
         if self.identifiant_rfc != None and not isinstance(self.identifiant_rfc, str):
             raise TypeError("L'identifiant RFC doit être une chaîne de caractères ou None.")
