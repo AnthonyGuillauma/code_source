@@ -21,7 +21,8 @@ class ParseurLogApache():
 
     PATTERN_ENTREE_LOG_APACHE = (
         r'(?P<ip>\S+) (?P<rfc>\S+) (?P<utilisateur>\S+)'
-        r' (\[(?P<horodatage>.+?)\]|-) "((?P<methode>\S+) (?P<url>\S+) (?P<protocole>\S+)|-)"'
+        r' (\[(?P<horodatage>\d{2}\/\w{3}\/\d{4}:\d{1,2}:\d{1,2}:\d{1,2} \+\d{4})\]|-)'
+        r' "((?P<methode>\S+) (?P<url>\S+) (?P<protocole>\S+)|-)"'
         r' (?P<code_status>\d+) (?P<taille_octets>\d+|-)'
         r'( "(?P<ancienne_url>.*?)")?( "(?P<agent_utilisateur>.*?)")?'
     )
@@ -138,9 +139,6 @@ class ParseurLogApache():
             if valeur != "-" and valeur != "":
                 return valeur
         return None
-
-
-
 
 class FormatLogApacheInvalideException(Exception):
 
