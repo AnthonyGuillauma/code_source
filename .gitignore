@@ -15,3 +15,6 @@ __pycache__/
 # Fichiers propres à Coverage
 .coverage
 htmlcov/
+
+# Fichiers de la documentation sphinx
+docs/build/
