@@ -31,3 +31,9 @@ sys.path.insert(0, os.path.abspath('../../app'))
 
 html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
+html_css_files = ["documentation.css"]
+html_theme_options = {
+    "collapse_navigation": False,   # Pour éviter la fermeture automatique
+    "sticky_navigation": True,  # Pour rendre le menu toujours visible
+    "titles_only": False    # Pour éviter de masquer les sous-sections
+}

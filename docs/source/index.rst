@@ -1,13 +1,21 @@
-Documentation LogBuster
-========================
+.. Documentation de LogBuster
 
-Add your content using ``reStructuredText`` syntax. See the
-`reStructuredText <https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>`_
-documentation for details.
+Bienvenue dans la documentation de LogBuster
+============================================
 
+LogBuster est un outil puissant pour analyser les fichiers de log Apache. 
+Il vous permet de :
+
+- Extraire des statistiques clés.
+- Exporter les données en JSON.
+- Gérer les erreurs de format avec précision.
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Documentation:
+   :maxdepth: 4
+   :caption: Contenu
 
    modules/index_modules.rst
+
+---
+
+© 2025 - Projet LogBuster

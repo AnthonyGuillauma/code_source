@@ -2,7 +2,8 @@ Modules
 ========================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 4
    :caption: Modules:
 
-   parse/index_parse.rst
+   parse/index_parse
+   donnees/index_donnees
