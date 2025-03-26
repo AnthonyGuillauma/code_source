@@ -13,6 +13,7 @@ Il vous permet de :
 .. toctree::
    :maxdepth: 4
    :caption: Contenu
+   :numbered:
 
    modules/index_modules.rst
 

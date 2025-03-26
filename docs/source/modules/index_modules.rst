@@ -5,5 +5,7 @@ Modules
    :maxdepth: 4
    :caption: Modules:
 
-   parse/index_parse
-   donnees/index_donnees
+   main.rst
+   cli/index_cli.rst
+   parse/index_parse.rst
+   donnees/index_donnees.rst
