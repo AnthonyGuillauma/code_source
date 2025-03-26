@@ -36,3 +36,5 @@ if __name__ == "__main__":
         print(f"Erreur dans la recherche du log Apache !\n{ex}")
     except FormatLogApacheInvalideException as ex:
         print(f"Erreur dans l'analyse du log Apache !\n{ex}")
+    except Exception as ex:
+        print(f"Erreur interne !\n{ex}")

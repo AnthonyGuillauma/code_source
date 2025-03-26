@@ -171,5 +171,5 @@ def test_parsage_entree_valide(parseur_log_apache):
     assert entree.requete.url == "/index.html"
     assert entree.requete.protocole_http == "HTTP/1.1"
     assert entree.requete.ancienne_url == "/home"
-    assert entree.reponse.code_status_http == 200
+    assert entree.reponse.code_statut_http == 200
     assert entree.reponse.taille_octets == 532
