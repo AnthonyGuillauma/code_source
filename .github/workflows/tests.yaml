@@ -37,7 +37,7 @@ jobs:
       # Étape 4 : Lancer les tests unitaires
       - name: Lancer les tests unitaires
         run: |
-          pytest tests/ --verbose --cache-clear --cov=app --cov-report=term-missing
+          pytest tests/ --basetemp=resultats_pytest --verbose --cov=src --cov-report=term-missing
 
       - name: Vérifier les fichiers
         run: |
@@ -50,4 +50,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: tests-resultats-python-${{ matrix.python-version }} # Nom de l'artefact
-          path: tests # Eléments à sauvegarder
+          path: resultats_pytest # Eléments à sauvegarder
