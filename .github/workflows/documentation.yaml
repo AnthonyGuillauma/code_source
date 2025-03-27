@@ -3,7 +3,7 @@ name: Construction et déploiement de la configuration
 on:
   push:
     branches:
-      - ci/documentation
+      - develop
 
 permissions:
   contents: read
