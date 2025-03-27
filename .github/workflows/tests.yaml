@@ -37,7 +37,11 @@ jobs:
       # Étape 4 : Lancer les tests unitaires
       - name: Lancer les tests unitaires
         run: |
-          pytest tests/ --verbose --cov=src --cov-report=term-missing
+          pytest tests/ --verbose --cache-clear --cov=app --cov-report=term-missing
+
+      - name: Vérifier les fichiers
+        run: |
+          ls -aR
 
       # Étape 5 : Sauvegarder les artefacts
       - name: Sauvegarder les résultats de test
