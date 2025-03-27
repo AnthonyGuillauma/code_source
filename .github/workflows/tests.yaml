@@ -41,6 +41,7 @@ jobs:
 
       - name: Vérifier les fichiers
         run: |
+          pwd
           ls -aR
 
       # Étape 5 : Sauvegarder les artefacts
@@ -49,4 +50,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: tests-resultats-python-${{ matrix.python-version }} # Nom de l'artefact
-          path: tests/.pytest_cache # Eléments à sauvegarder
+          path: tests # Eléments à sauvegarder
