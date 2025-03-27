@@ -42,7 +42,7 @@ jobs:
       # Étape 5 : Sauvegarder les artefacts
       - name: Sauvegarder les résultats de test
         if: always()  # Sauvegarde même si les tests échouent
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: tests-resultats-python-${{ matrix.python-version }} # Nom de l'artefact
           path: tests/.pytest_cache # Eléments à sauvegarder
