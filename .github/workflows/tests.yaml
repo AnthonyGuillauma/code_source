@@ -44,5 +44,6 @@ jobs:
         if: always()  # Sauvegarde même si les tests échouent
         uses: actions/upload-artifact@v4
         with:
+          if-no-files-found: error
           name: tests-resultats-python-${{ matrix.python-version }} # Nom de l'artefact
           path: resultats_pytest # Eléments à sauvegarder
