@@ -29,8 +29,11 @@ class ReponseInformations:
 
     def __post_init__(self):
         # Vérification du code de statut HTTP
-        if not isinstance(self.code_statut_http, int):
+        if (not isinstance(self.code_statut_http, int) 
+        or isinstance(self.code_statut_http, bool)):
             raise TypeError("Le code de statut HTTP doit être un entier.")
         # Vérification de la taille de la réponse (en octets)
-        if self.taille_octets != None and not isinstance(self.taille_octets, int):
+        if (self.taille_octets != None 
+            and not isinstance(self.taille_octets, int)
+            or isinstance(self.taille_octets, bool)):
             raise TypeError("La taille en octets doit être un entier ou None.")
