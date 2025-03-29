@@ -5,72 +5,8 @@ Module des tests unitaires pour le parseur de fichier de log Apache.
 import pytest
 from re import match
 from datetime import datetime, timezone, timedelta
+from conftest import lignes_valides, lignes_invalides
 from parse.parseur_log_apache import ParseurLogApache, FormatLogApacheInvalideException
-
-# Données utilisées pour les tests unitaires
-
-# Liste d'entrées valides
-lignes_log_apache = [
-    # Première entrée
-    '192.168.1.1 - - [12/Jan/2025:10:15:32 +0000] "GET /index.html HTTP/1.1" 200 532',
-    # Deuxième entrée
-    '::1 - - [05/Mar/2025:16:59:43 +0100] "POST /backend/getConnexion.php HTTP/1.1" 200 20'
-    '"http://localhost/backend/connexion.php?titre=Connexion" "Mozilla/5.0 (Windows NT 10.0;'
-    ' Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"',
-    # Troisième entrée
-    '::1 - - [05/Mar/2025:16:59:43 +0100] "DELETE / HTTP/2.1" 200 20'
-]
-
-# Liste d'entrées invalides
-lignes_log_apache_invalides = [
-    '',
-    'Une ligne avec un format invalide !',
-    '::1 - - [05/Mar/2025:16:59:43] "DELETE / HTTP/2.1" 200 20',
-    '192.168.1.1 - [12/Jan/2025:10:15:32 +0000] "GET /index.html HTTP/1.1" test 532'
-]
-
-@pytest.fixture()
-def log_apache(tmp_path):
-    """ 
-    Fixture pour créer et récupérer un fichier de log Apache temporaire.
-    Cette fixture permet de générer un fichier de log Apache temporaire contenant
-    soit des lignes valides, soit des lignes invalides selon le paramètre fourni.
-    Args:
-        tmp_path (Path): Chemin temporaire fourni par pytest.
-    Returns:
-        Callable[[bool], Path]: Une fonction qui crée et retourne le chemin 
-        du fichier de log temporaire.
-    """
-    def _creer_log(valide):
-        """
-        Crée un fichier de log Apache temporaire.
-        Args:
-            valide (bool): Si True, le fichier contient des lignes de log valides.
-                Sinon, il contient des lignes invalides.
-        Returns:
-            Path: Le chemin du fichier de log temporaire créé.
-        """
-        contenu = (
-            "\n".join(lignes_log_apache) 
-            if valide == True
-            else "\n".join(lignes_log_apache_invalides)
-        )
-        fichier_temp = tmp_path / "access.log"
-        fichier_temp.write_text(contenu)
-        return fichier_temp
-    return _creer_log
-
-@pytest.fixture
-def parseur_log_apache(log_apache, request):
-    """
-    Fixture pour initialiser le parseur de log Apache.
-    Retourne une instance de la classe ParseurLogApache pour être utilisée dans les tests.
-    Returns:
-        ParseurLogApache: Une instance de la classe ParseurArgumentsCLI.
-    """
-    if hasattr(request, "param") and request.param == False:
-        return ParseurLogApache(log_apache(False))
-    return ParseurLogApache(log_apache(True))
 
 
 # Tests unitaires
@@ -98,8 +34,8 @@ def test_exception_fichier_invalide(parseur_log_apache):
     with pytest.raises(FormatLogApacheInvalideException):
         fichier = parseur_log_apache.parse_fichier()
 
-@pytest.mark.parametrize("ligne_log", lignes_log_apache_invalides)
-def test_exception_entree_invalide(parseur_log_apache, ligne_log):
+@pytest.mark.parametrize("ligne_invalide", lignes_invalides)
+def test_exception_entree_invalide(parseur_log_apache, ligne_invalide):
     """
     Vérifie qu'une exception est bien levée lorsque le format d'au moins une
     entrée est invalide dans un fichier de log Apache.
@@ -111,7 +47,7 @@ def test_exception_entree_invalide(parseur_log_apache, ligne_log):
         None
     """
     with pytest.raises(FormatLogApacheInvalideException):
-        parseur_log_apache.parse_entree(ligne_log)
+        parseur_log_apache.parse_entree(ligne_invalide)
 
 def test_nombre_entrees_valide(parseur_log_apache):
     """
@@ -123,7 +59,7 @@ def test_nombre_entrees_valide(parseur_log_apache):
         None
     """
     fichier_log = parseur_log_apache.parse_fichier()
-    assert len(fichier_log.entrees) == len(lignes_log_apache)
+    assert len(fichier_log.entrees) == len(lignes_valides)
 
 @pytest.mark.parametrize("nom_information, retour_attendu", [
     ("ip", "192.168.1.1"),

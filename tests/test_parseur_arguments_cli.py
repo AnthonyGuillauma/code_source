@@ -3,19 +3,10 @@ Module des tests unitaires pour le parseur des arguments passés depuis la CLI.
 """
 
 import pytest
-from cli.parseur_arguments_cli import ParseurArgumentsCLI, ArgumentCLIException
+from cli.parseur_arguments_cli import ArgumentCLIException
+
 
 # Données utilisées pour les tests unitaires
-
-@pytest.fixture
-def parseur_arguments_cli():
-    """
-    Fixture pour initialiser le parseur d'arguments CLI.
-    Retourne une instance de la classe ParseurArgumentsCLI pour être utilisée dans les tests.
-    Returns:
-        ParseurArgumentsCLI: Une instance de la classe ParseurArgumentsCLI.
-    """
-    return ParseurArgumentsCLI()
 
 chemins_valides = [
     "fichier.log",
