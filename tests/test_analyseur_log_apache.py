@@ -6,13 +6,14 @@ import pytest
 from parse.fichier_log_apache import FichierLogApache
 from analyse.analyseur_log_apache import AnalyseurLogApache
 
+
 # Tests unitaires
 
 @pytest.mark.parametrize("fichier, nombre_par_top", [
     (False, 3),
     (FichierLogApache("test.log"), False)
 ])
-def test_analyseur_exception_type_invalide(fichier, nombre_par_top):
+def test_analyseur_log_exception_type_invalide(fichier, nombre_par_top):
     """
     Vérifie que la classe AnalyseurLogApache lève une :class:`TypeError` si les types des 
     paramètres du constructeur sont invalides.
@@ -21,6 +22,9 @@ def test_analyseur_exception_type_invalide(fichier, nombre_par_top):
         - Type incorrect pour le paramètre ``fichier``.
         - Type incorrect pour le paramètre ``nombre_par_top``.
 
+    Asserts:
+        - Une exception :class:`TypeError` est levée.
+
     Args:
         fichier (any): Représentation du fichier log.
         nombre_par_top (any): Nombre maximum d'éléments dans le top classement.
@@ -28,13 +32,16 @@ def test_analyseur_exception_type_invalide(fichier, nombre_par_top):
     with pytest.raises(TypeError):
         analyseur = AnalyseurLogApache(fichier, nombre_par_top)
 
-def test_analyseur_exception_valeur_nombre_par_top_invalide():
+def test_analyseur_log_exception_valeur_nombre_par_top_invalide():
     """
-    Vérifie que la classe AnalyseurLogApache lève une :class:`ValueError` si le
+    Vérifie que la classe AnalyseurLogApache lève une exception si le
     paramètre ``nombre_par_top`` du constructeur est un entier négatif.
 
     Scénarios testés:
         - Nombre négatif pour ``nombre_par_top``.
+    
+    Asserts:
+        - Une exception :class:`ValueError` est levée.
     """
     with pytest.raises(ValueError):
         analyseur = AnalyseurLogApache(FichierLogApache("test.log"), -4)
@@ -49,12 +56,15 @@ def test_analyseur_exception_repartition_elements_type_invalide(analyseur_log_ap
                                                       nom_element, 
                                                       mode_top_classement):
     """
-    Vérifie que _get_repartition_elements lève une :class:`TypeError` si les types sont invalides.
+    Vérifie que _get_repartition_elements lève une exception si les types sont invalides.
 
     Scénarios testés:
-        - ``liste_elements`` n'est pas une ``list``.
-        - ``nom_element`` n'est pas un ``str``.
-        - ``mode_top_classement`` n'est pas un ``bool``.
+        - Type incorrect pour le paramètre ``liste_elements``.
+        - Type incorrect pour le paramètre ``nom_element``.
+        - Type incorrect pour le paramètre ``mode_top_classement``.
+
+    Asserts:
+        - Une exception :class:`TypeError` est levée.
 
     Args:
         analyseur_log_apache (AnalyseurLogApache): Fixture pour l'instance 
@@ -202,3 +212,61 @@ def test_analyseur_repartition_code_statut_htpp_valide(analyseur_log_apache):
     assert repartition[1]["code"] == 200
     assert repartition[1]["total"] == 1
     assert repartition[1]["taux"] == 20.0
+
+@pytest.mark.parametrize("nombre_entrees", [
+    (0), (3), (100)
+])
+def test_analyseur_get_total_entrees_valide(analyseur_log_apache,
+                                            fichier_log_apache, 
+                                            entree_log_apache, 
+                                            nombre_entrees):
+    """
+    Vérifie que ``get_total_entrees`` retourne le nombre correcte d'entrées dans le fichier.
+
+    Scénarios testés:
+        - Vérification avec des fichiers avec des nombre d'entrées différents.
+
+    Asserts:
+        - La méthode renvoie le nombre d'éléments dans la liste.
+        
+    Args:
+        analyseur_log_apache (AnalyseurLogApache): Fixture pour l'instance 
+            de la classe :class:`AnalyseurLogApache`.
+        fichier_log_apache (FichierLogApache): Fixture pour l'instance 
+            de la classe :class:`FichierLogApache`.
+        entree_log_apache (EntreeLogApache): Fixture pour l'instance 
+            de la classe :class:`EntreeLogApache`.
+        nombre_entrees (int): Le nombre total d'entrées dans le fichier.
+    """
+    fichier_log_apache.entrees = [entree_log_apache] * nombre_entrees
+    assert analyseur_log_apache.get_total_entrees() == nombre_entrees
+
+def test_analyseur_get_analyse_complete_valide(analyseur_log_apache):
+    """
+    Vérifie que ``get_analyse_complete`` retourne un rapport de l'analyse correct
+    qui se base sur le retour des autres méthodes.
+
+    Scénarios testés:
+        - Vérification du rapport de l'analyse.
+
+    Asserts:
+        - Les éléments du rapport se basent sur les mêmes valeurs que les autres méthodes.
+        
+    Args:
+        analyseur_log_apache (AnalyseurLogApache): Fixture pour l'instance 
+            de la classe :class:`AnalyseurLogApache`.
+        fichier_log_apache (FichierLogApache): Fixture pour l'instance 
+            de la classe :class:`FichierLogApache`.
+        entree_log_apache (EntreeLogApache): Fixture pour l'instance 
+            de la classe :class:`EntreeLogApache`.
+        nombre_entrees (int): Le nombre total d'entrées dans le fichier.
+    """
+    analyse = analyseur_log_apache.get_analyse_complete()
+    assert analyse["chemin"] == analyseur_log_apache.fichier.chemin
+    statistiques = analyse["statistiques"]
+    assert statistiques["total_entrees"] == analyseur_log_apache.get_total_entrees()
+    statistiques_requetes = statistiques["requetes"]
+    assert statistiques_requetes["top_urls"] == analyseur_log_apache.get_top_urls()
+    assert (statistiques_requetes["repartition_code_statut_http"] 
+            == analyseur_log_apache.get_total_par_code_statut_http())
+    

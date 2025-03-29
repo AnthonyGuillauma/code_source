@@ -11,52 +11,72 @@ from parse.parseur_log_apache import ParseurLogApache, FormatLogApacheInvalideEx
 
 # Tests unitaires
 
-def test_exception_fichier_invalide():
+def test_parseur_log_exception_fichier_introuvable():
     """
-    Vérifie qu'une exception est bien levée lorsque le fichier n'existe pas.
-    Returns:
-        None
+    Vérifie qu'une exception est bien levée lorsque le chemin du fichier
+    passé dans le constructeur n'est pas trouvé.
+
+    Scénarios testés:
+        - Création d'une instance avec un chemin invalide.
+
+    Asserts:
+        - Une exception :class:`FileNotFoundError` est levée.
     """
     with pytest.raises(FileNotFoundError):
         parseur = ParseurLogApache("fichier/existe/pas.txt")
 
 @pytest.mark.parametrize("parseur_log_apache", [False], indirect=["parseur_log_apache"])
-def test_exception_fichier_invalide(parseur_log_apache):
+def test_parseur_log_exception_fichier_invalide(parseur_log_apache):
     """
     Vérifie qu'une exception est bien levée lorsque le format d'un fichier n'est
     pas valide (une entrée invalide).
+
+    Scénarios testés:
+        - Parsage d'un fichier invalide.
+
+    Asserts:
+        - Une exception :class:`FormatLogApacheInvalideException` est levée.
+
     Args:
         parseur_arguments_cli (ParseurArgumentsCLI): Fixture pour l'instance 
-            de la classe ParseurLogApache.
-    Returns:
-        None
+            de la classe :class:`ParseurLogApache`.
     """
     with pytest.raises(FormatLogApacheInvalideException):
         fichier = parseur_log_apache.parse_fichier()
 
 @pytest.mark.parametrize("ligne_invalide", lignes_invalides)
-def test_exception_entree_invalide(parseur_log_apache, ligne_invalide):
+def test_parseur_log_exception_entree_invalide(parseur_log_apache, ligne_invalide):
     """
-    Vérifie qu'une exception est bien levée lorsque le format d'au moins une
-    entrée est invalide dans un fichier de log Apache.
+    Vérifie qu'une exception est bien levée lorsque le format d'une entrée
+    est invalide.
+    
+    Scénarios testés:
+        - Parsage d'une entrée invalide.
+
+    Asserts:
+        - Une exception :class:`FormatLogApacheInvalideException` est levée.
+
     Args:
         parseur_arguments_cli (ParseurArgumentsCLI): Fixture pour l'instance 
-            de la classe ParseurLogApache.
-        ligne_log (str): L'entrée à analyser.
-    Returns:
-        None
+            de la classe :class:`ParseurLogApache`.
+        ligne_invalide (str): L'entrée à analyser.
     """
     with pytest.raises(FormatLogApacheInvalideException):
         parseur_log_apache.parse_entree(ligne_invalide)
 
-def test_nombre_entrees_valide(parseur_log_apache):
+def test_parseur_log_nombre_entrees_valide(parseur_log_apache):
     """
     Vérifie que le nombre d'entrées trouvé correspond au nombre de ligne dans le log.
+
+    Scénarios testés:
+        - Parsage d'un fichier et récupération du nombre d'entrées dans ce dernier.
+
+    Asserts:
+        - Le nombre d'entrées récupéré est égale au nombre attendu.
+
     Args:
         parseur_arguments_cli (ParseurArgumentsCLI): Fixture pour l'instance 
-            de la classe ParseurLogApache.
-    Returns:
-        None
+            de la classe :class:`ParseurLogApache`.
     """
     fichier_log = parseur_log_apache.parse_fichier()
     assert len(fichier_log.entrees) == len(lignes_valides)
@@ -67,17 +87,26 @@ def test_nombre_entrees_valide(parseur_log_apache):
     ("horodatage", "12/Jan/2025:10:15:32 +0000"),
     ("Existe pas !", None)
 ])
-def test_regex_recuperation_information_entree(parseur_log_apache, nom_information, retour_attendu):
+def test_parseur_log_regex_recuperation_information_entree(parseur_log_apache, 
+                                                           nom_information, 
+                                                           retour_attendu):
     """
     Vérifie que la récupération des informations à partir d'un résultat de regex fonctionne
-    correctement et que toutes valeurs introuvables ou égales à - renvoient None. 
+    correctement et que toutes valeurs introuvables ou égales à - renvoient None.
+
+    Scénarios testés:
+        - Récupération d'une information avec une valeur.
+        - Récupération d'une information sans valeur (égale à -).
+        - Récupération d'une information inexistante.
+
+    Asserts:
+        - La valeur retournée est égale à celle attendue. 
+    
     Args:
         parseur_arguments_cli (ParseurArgumentsCLI): Fixture pour l'instance 
-            de la classe ParseurLogApache.
+            de la classe :class:`ParseurLogApache`.
         nom_information (str): Nom de l'information à récupérer.
         retour_attendu (Union[None, str]): La valeur attendue de l'information.
-    Returns:
-        None
     """
     ligne = '192.168.1.1 - - [12/Jan/2025:10:15:32 +0000] "GET /index.html HTTP/1.1" 200 532'
     analyse = match(parseur_log_apache.PATTERN_ENTREE_LOG_APACHE, ligne)
@@ -88,11 +117,16 @@ def test_parsage_entree_valide(parseur_log_apache):
     """
     Vérifie qu'une entrée est correctement analysée et que les informations partent
     au bon endroit avec le bon typage.
+
+    Scénarios testés:
+        - Parsage d'une entrée valide et récupération des valeurs trouvées.
+
+    Asserts:
+        - Les valeurs sont égales à celles attendues. 
+
     Args:
         parseur_arguments_cli (ParseurArgumentsCLI): Fixture pour l'instance 
-            de la classe ParseurLogApache.
-    Returns:
-        None
+            de la classe :class:`ParseurLogApache`.
     """
     ligne = '192.168.1.1 - - [12/Jan/2025:10:15:32 +0000] "GET /index.html HTTP/1.1" ' \
     '200 532 "/home" "Chrome/133.0.0.0"'
