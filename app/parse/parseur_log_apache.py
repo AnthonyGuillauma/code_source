@@ -114,11 +114,7 @@ class ParseurLogApache():
 
         # Récupération des informations liées à la réponse
         code_statut = self.get_information_entree(resultat_analyse, "code_status")
-        if code_statut:
-            code_statut = int(code_statut)
-
-        if code_statut is None:
-            raise FormatLogApacheInvalideException("Le code de statut HTTP est obligatoire.")
+        code_statut = int(code_statut)
 
         taille_octets = self.get_information_entree(resultat_analyse, "taille_octets")
         if taille_octets:
