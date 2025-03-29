@@ -5,6 +5,7 @@ Point d'entrée de l'application LogBuster !
 import colorama
 from cli.parseur_arguments_cli import ParseurArgumentsCLI, ArgumentCLIException
 from parse.parseur_log_apache import ParseurLogApache, FormatLogApacheInvalideException
+from analyse.analyseur_log_apache import AnalyseurLogApache
 
 
 if __name__ == "__main__":
@@ -27,8 +28,10 @@ if __name__ == "__main__":
         arguments_cli = parseur_cli.parse_args()
         # Analyse syntaxique du fichier log
         parseur_log = ParseurLogApache(arguments_cli.chemin_log)
-        parseur_log.parse_fichier()
+        fichier_log = parseur_log.parse_fichier()
         # Analyse statistique du fichier log
+        analyseur_log = AnalyseurLogApache(fichier_log)
+        analyse = analyseur_log.get_analyse_complete()
         # Exportation de l'analyse
     except ArgumentCLIException as ex:
         print(f"Erreur dans les arguments fournis !\n {ex}")
