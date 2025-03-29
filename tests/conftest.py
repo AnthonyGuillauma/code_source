@@ -36,7 +36,11 @@ lignes_invalides = [
 
         '::1 - - [05/Mar/2025:16:59:43] "DELETE / HTTP/2.1" 200 20',
 
-        '192.168.1.1 - [12/Jan/2025:10:15:32 +0000] "GET /index.html HTTP/1.1" test 532'
+        '- - - [12/Jan/2025:10:15:32 +0000] "GET /index.html HTTP/1.1" 500 532',
+
+        '::1 - - - "GET /index.html HTTP/1.1" 500 532',
+
+        '::1 - - [12/Jan/2025:10:15:32 +0000] "GET /index.html HTTP/1.1" - 120'
 ]
 
 # ------------------
@@ -47,6 +51,7 @@ lignes_invalides = [
 def parseur_arguments_cli():
     """
     Fixture pour initialiser le parseur d'arguments CLI.
+
     Returns:
         ParseurArgumentsCLI: Une instance de la classe :class:`ParseurArgumentsCLI`.
     """
@@ -58,8 +63,10 @@ def log_apache(tmp_path):
     Fixture pour créer et récupérer un fichier de log Apache temporaire.
     Elle permet de générer un fichier de log Apache temporaire contenant
     soit des lignes valides, soit des lignes invalides selon le paramètre fourni.
+
     Args:
         tmp_path (Path): Chemin temporaire fourni par pytest.
+
     Returns:
         Callable[[bool], Path]: Une fonction qui crée et retourne le chemin 
         du fichier de log temporaire.
@@ -67,9 +74,11 @@ def log_apache(tmp_path):
     def _creer_log(valide):
         """
         Crée un fichier de log Apache temporaire.
+
         Args:
             valide (bool): Si ``True``, le fichier contient des lignes de log valides.
                 Sinon, il contient des lignes invalides.
+
         Returns:
             Path: Le chemin du fichier de log temporaire créé.
         """
@@ -87,12 +96,14 @@ def log_apache(tmp_path):
 def parseur_log_apache(log_apache, request):
     """
     Fixture pour initialiser un parseur de fichier de log Apache.
+
     Args:
         log_apache: La fixture pour initialiser un fichier temporaire.
         request: Paramètre de la fonction. Si il est égale à ``False``, cette fixture
             retourne un parseur de log Apache qui analyse un fichier avec un format
             invalide. Sinon, retourne un parseur de log Apache qui analyse un fichier
             avec un format valide.
+
     Returns:
         ParseurLogApache: Une instance de la classe :class:`ParseurLogApache`.
     """
@@ -106,10 +117,31 @@ def fichier_log_apache(parseur_log_apache):
     Fixture pour initialiser une représentation d'un fichier de log Apache.
     Cette représentation comprend par défaut les entrées parsées de la liste
     ``lignes_valides``.
+
+    Args:
+        parseur_arguments_cli (ParseurArgumentsCLI): Fixture pour l'instance 
+            de la classe :class:`ParseurLogApache`.
+
     Returns:
         FichierLogApache: Une instance de la classe :class:`FichierLogApache`.
     """
     return parseur_log_apache.parse_fichier()
+
+@pytest.fixture()
+def entree_log_apache(fichier_log_apache):
+    """
+    Fixture pour initialiser une représentation d'une entrée d'un fichier de log Apache.
+    Cette représentation comprend par défaut les informations de la première ligne de
+    ``lignes_valides``.
+
+    Args:
+        fichier_log_apache (FichierLogApache): Fixture pour l'instance 
+            de la classe :class:`FichierLogApache`.
+
+    Returns:
+        EntreeLogApache: Une instance de la classe :class:`EntreeLogApache`.
+    """
+    return fichier_log_apache.entrees[0]
 
 @pytest.fixture()
 def analyseur_log_apache(fichier_log_apache):
@@ -117,6 +149,11 @@ def analyseur_log_apache(fichier_log_apache):
     Fixture pour initialiser un analyseur statistique de fichier de log Apache.
     Le fichier qu'analyse cet analyseur comprend par défaut les entrées parsées de la liste
     ``lignes_valides``.
+
+    Args:
+        fichier_log_apache (FichierLogApache): Fixture pour l'instance 
+            de la classe :class:`FichierLogApache`.
+
     Returns:
         AnalyseurLogApache: Une instance de la classe :class:`AnalyseurLogApache`.
     """

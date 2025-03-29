@@ -8,7 +8,10 @@ from parse.parseur_log_apache import ParseurLogApache, FormatLogApacheInvalideEx
 from analyse.analyseur_log_apache import AnalyseurLogApache
 
 
-if __name__ == "__main__":
+def main():
+    """
+    Point d'entrée de l'application.
+    """
     colorama.init()
     print(colorama.Style.DIM + r"""
                                   .-. .-')                 .-')    .-') _     ('-.  _  .-')  ,---.
@@ -41,3 +44,7 @@ if __name__ == "__main__":
         print(f"Erreur dans l'analyse du log Apache !\n{ex}")
     except Exception as ex:
         print(f"Erreur interne !\n{ex}")
+
+
+if __name__ == "__main__":
+    main()
