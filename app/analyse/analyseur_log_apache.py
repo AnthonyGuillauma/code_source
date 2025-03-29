@@ -10,6 +10,7 @@ class AnalyseurLogApache:
     """
     Représente un analysateur pour faire une analyse statistique d'un fichier
     log Apache et créer des statistiques à partir de ce dernier.
+
     Attributes:
         fichier (FichierLogApache): Le fichier de log Apache à analyser.
         nombre_par_top (int): Le nombre maximal d'éléments à inclure dans
@@ -19,10 +20,12 @@ class AnalyseurLogApache:
     def __init__(self, fichier_log_apache: FichierLogApache, nombre_par_top: int = 3):
         """
         Initialise un nouveau analysateur de fichier log Apache.
+
         Args:
             fichier_log_apache (FichierLogApache): Le fichier à analyser.
             nombre_par_top (int): Le nombre maximal d'éléments à inclure dans
                 les statistiques des classements (tops). Par défaut, sa valeur est égale à ``3``.
+
         Raises:
             TypeError: Si l'argument ``fichier_log_apache`` n'est pas une instance de :class:`FichierLogApache`
                 ou si l'argument ``nombre_par_top`` n'est pas un entier.
@@ -43,12 +46,14 @@ class AnalyseurLogApache:
                           mode_top_classement: bool = False) -> list:
         """
         Retourne le top 'n' des éléments qui apparaissent le plus dans la liste.
+
         Args:
             liste_elements (list): La liste des éléments.
             nom_elements (str): Le nom des éléments.
             mode_top_classement (bool): Indique si la méthode doit retourner ou non le top
                 'n' des éléments les plus présents, où 'n' est égale à l'attribut
                 :attr:`nombre_par_top`. Par défaut, ce mode est désactivé (valeur à ``False``).
+
         Returns:
             list: Une liste de dictionnaires contenant, pour chaque élément :
                 - Sa valeur.
@@ -77,14 +82,16 @@ class AnalyseurLogApache:
     def get_analyse_complete(self) -> dict:
         """
         Retourne l'analyse complète du fichier de log Apache.
+
+        L'analyse suit la structure suivante :
+            - chemin: chemin du fichier
+            - statistiques:
+                        - requetes:
+                            - top_urls: voir :meth:`get_top_urls`
+                            - repartition_code_statut_http: voir :meth:`get_total_par_code_statut_http`
+
         Returns:
             dict: L'analyse sous forme d'un dictionnaire.
-                Le dictionnaire suit la structure suivante:
-                - chemin: chemin du fichier
-                - statistiques:
-                    - requetes:
-                        - top_urls: voir :meth:`get_top_urls`
-                        - repartition_code_statut_http: voir :meth:`get_total_par_code_statut_http`
         """
         return {
             "chemin": self.fichier.chemin,
@@ -100,6 +107,7 @@ class AnalyseurLogApache:
     def get_total_entrees(self) -> int:
         """
         Retourne le nombre total d'entrées dans le fichier.
+
         Returns:
             int: Le nombre total d'entrées.
         """
@@ -108,11 +116,13 @@ class AnalyseurLogApache:
     def get_top_urls(self) -> list:
         """
         Retourne le top :attr:`nombre_par_top` des urls les plus demandées.
+
         Returns:
             list: Une liste de dictionnaires où chaque clé contient :
                 - url: L'URL demandée.
                 - total: Le nombre total de fois où cette URL a été demandée.
                 - taux: Le pourcentage de demandes correspondant à cette URL.
+
                 La liste est triée dans l'ordre décroissant du nombre total d'apparitions.
         """
         return self._get_repartition_elements(
@@ -124,11 +134,13 @@ class AnalyseurLogApache:
     def get_total_par_code_statut_http(self) -> list:
         """
         Retourne la répartition des réponses par code de statut htpp retourné.
+
         Returns:
             list: Une liste de dictionnaires où chaque clé contient :
                 - code: Le code de statut http.
                 - total: Le nombre total de fois où ce code a été demandée.
                 - taux: Le pourcentage de demandes correspondant à ce code.
+
                 La liste est triée dans l'ordre décroissant du nombre total d'apparitions.
         """
         return self._get_repartition_elements(
