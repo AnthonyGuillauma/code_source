@@ -3,7 +3,7 @@ name: Tests unitaires - LogBuster
 on:
   push:
     branches:
-      - ci/fix-test-unitaires
+      - develop
 
 # Permissions (lecture uniquement)
 permissions:
