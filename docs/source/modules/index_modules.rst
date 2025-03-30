@@ -10,3 +10,4 @@ Modules
    parse/index_parse.rst
    donnees/index_donnees.rst
    analyse/index_analyse.rst
+   export/index_export.rst
