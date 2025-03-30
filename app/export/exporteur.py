@@ -3,7 +3,6 @@ Module pour l'exportation des données.
 """
 
 from os.path import abspath, dirname, isdir
-from os import access, W_OK
 from json import dump
 
 
@@ -26,17 +25,18 @@ class Exporteur:
                 les données seront exportées.
         
         Raises:
-            ExportationException: Exportation impossible à cause d'une manque
-                de droits ou à un dossier parent inexistant.
+            TypeError: Le chemin de sortie n'est pas une chaîne de caractère.
+            ExportationException: Exportation impossible à cause de
+                l'emplacement invalide du fichier de sortie.
         """
+        if not isinstance(chemin_sortie, str):
+            raise TypeError("Le chemin de sortie doit être une chaîne de caractère.")
         chemin_sortie_absolue = abspath(chemin_sortie)
         dossier_parent = dirname(chemin_sortie_absolue)
         if not isdir(dossier_parent):
             raise ExportationException(f"Impossible d'exporter vers le "
                                        f"fichier {chemin_sortie}, son dossier parent "
                                        f"{dossier_parent} n'existe pas.")
-        if not access(dossier_parent, W_OK):
-            raise ExportationException(f"Pas le droit d'écrire dans le dossier {dossier_parent}.")
         self._chemin_sortie = chemin_sortie
 
     def export_vers_json(self, donnees: dict):
