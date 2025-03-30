@@ -6,6 +6,7 @@ import colorama
 from cli.parseur_arguments_cli import ParseurArgumentsCLI, ArgumentCLIException
 from parse.parseur_log_apache import ParseurLogApache, FormatLogApacheInvalideException
 from analyse.analyseur_log_apache import AnalyseurLogApache
+from export.exporteur import Exporteur, ExportationException
 
 
 def main():
@@ -36,12 +37,16 @@ def main():
         analyseur_log = AnalyseurLogApache(fichier_log)
         analyse = analyseur_log.get_analyse_complete()
         # Exportation de l'analyse
+        exporteur = Exporteur(arguments_cli.sortie)
+        exporteur.export_vers_json(analyse)
     except ArgumentCLIException as ex:
         print(f"Erreur dans les arguments fournis !\n {ex}")
     except FileNotFoundError as ex:
         print(f"Erreur dans la recherche du log Apache !\n{ex}")
     except FormatLogApacheInvalideException as ex:
         print(f"Erreur dans l'analyse du log Apache !\n{ex}")
+    except ExportationException as ex:
+        print(f"Erreur dans l'exportation de l'analyse !\n{ex}")
     except Exception as ex:
         print(f"Erreur interne !\n{ex}")
 
