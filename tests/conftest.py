@@ -4,9 +4,9 @@ Module de configuration des tests unitaires.
 
 import pytest
 from cli.parseur_arguments_cli import ParseurArgumentsCLI
-from parse.fichier_log_apache import FichierLogApache
 from parse.parseur_log_apache import ParseurLogApache
 from analyse.analyseur_log_apache import AnalyseurLogApache
+from export.exporteur import Exporteur
 
 
 # -----------------
@@ -98,8 +98,8 @@ def parseur_log_apache(log_apache, request):
     Fixture pour initialiser un parseur de fichier de log Apache.
 
     Args:
-        log_apache: La fixture pour initialiser un fichier temporaire.
-        request: Paramètre de la fonction. Si il est égale à ``False``, cette fixture
+        log_apache (Path): La fixture pour initialiser un fichier temporaire.
+        request (object): Paramètre de la fonction. Si il est égale à ``False``, cette fixture
             retourne un parseur de log Apache qui analyse un fichier avec un format
             invalide. Sinon, retourne un parseur de log Apache qui analyse un fichier
             avec un format valide.
@@ -158,3 +158,31 @@ def analyseur_log_apache(fichier_log_apache):
         AnalyseurLogApache: Une instance de la classe :class:`AnalyseurLogApache`.
     """
     return AnalyseurLogApache(fichier_log_apache)
+
+@pytest.fixture
+def fichier_json(tmp_path):
+    """
+    Fixture pour retourner un chemin de fichier JSON temporaire.
+
+    Args:
+        tmp_path (Path): Chemin temporaire fourni par pytest.
+
+    Returns:
+        Path: Un chemin de fichier JSON temporaire.
+    """
+    fichier_temp = tmp_path / "sortie.json"
+    return fichier_temp
+
+@pytest.fixture
+def exporteur(fichier_json):
+    """
+    Fixture pour initialiser un exportateur de données.
+
+    Args:
+        fichier_json (Path): Fixture pour initialiser 
+            un chemin de fichier json temporaire.
+
+    Returns:
+        Exporteur: Une instance de la classe :class:`Exportateur`.
+    """
+    return Exporteur(str(fichier_json))

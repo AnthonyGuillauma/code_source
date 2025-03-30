@@ -7,11 +7,13 @@ import sys
 from main import main
 from cli.parseur_arguments_cli import ArgumentCLIException
 from parse.parseur_log_apache import FormatLogApacheInvalideException
+from export.exporteur import ExportationException
 
 @pytest.mark.parametrize("exception", [
     (ArgumentCLIException),
     (FileNotFoundError),
     (FormatLogApacheInvalideException),
+    (ExportationException),
     (Exception)
 ])
 def test_main_gestion_exception(mocker, exception):
@@ -50,6 +52,8 @@ def test_main_succes(mocker):
     
     mock_analyseur_log = mocker.patch("main.AnalyseurLogApache")
     mock_analyseur_log.return_value.get_analyse_complete.return_value = {"chemin": "test.log"}
+
+    mocker.patch("main.Exporteur")
     
     # Vérifie qu'aucune exception n'est levée
     try:
