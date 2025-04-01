@@ -3,6 +3,7 @@ Point d'entrée de l'application LogBuster !
 """
 
 import colorama
+from cli.afficheur_cli import AfficheurCLI
 from cli.parseur_arguments_cli import ParseurArgumentsCLI, ArgumentCLIException
 from parse.parseur_log_apache import ParseurLogApache, FormatLogApacheInvalideException
 from analyse.analyseur_log_apache import AnalyseurLogApache
@@ -14,19 +15,10 @@ def main():
     Point d'entrée de l'application.
     """
     colorama.init()
-    print(colorama.Style.DIM + r"""
-                                  .-. .-')                 .-')    .-') _     ('-.  _  .-')  ,---.
-                                  \  ( OO )               ( OO ). (  OO) )  _(  OO)( \( -O ) |   |
- ,--.      .-'),-----.   ,----.    ;-----.\  ,--. ,--.   (_)---\_)/     '._(,------.,------. |   |
- |  |.-') ( OO'  .-.  ' '  .-./-') | .-.  |  |  | |  |   /    _ | |'--...__)|  .---'|   /`. '|   |
- |  | OO )/   |  | |  | |  |_( O- )| '-' /_) |  | | .-') \  :` `. '--.  .--'|  |    |  /  | ||   |
- |  |`-' |\_) |  |\|  | |  | .--, \| .-. `.  |  |_|( OO ) '..`''.)   |  |  (|  '--. |  |_.' ||  .'
-(|  '---.'  \ |  | |  |(|  | '. (_/| |  \  | |  | | `-' /.-._)   \   |  |   |  .--' |  .  '.'`--' 
- |      |    `'  '-'  ' |  '--'  | | '--'  /('  '-'(_.-' \       /   |  |   |  `---.|  |\  \ .--. 
- `------'      `-----'   `------'  `------'   `-----'     `-----'    `--'   `------'`--' '--''--' 
-            
-          """)
+    a = AfficheurCLI()
     try:
+        a.affiche_message("Who ya gonna call? LogBuster!")
+        a.lance_animation_chargement()
         # Récupération des arguments
         parseur_cli = ParseurArgumentsCLI()
         arguments_cli = parseur_cli.parse_args()
@@ -39,6 +31,7 @@ def main():
         # Exportation de l'analyse
         exporteur = Exporteur(arguments_cli.sortie)
         exporteur.export_vers_json(analyse)
+        a.stop_animation_chargement()
     except ArgumentCLIException as ex:
         print(f"Erreur dans les arguments fournis !\n {ex}")
     except FileNotFoundError as ex:
