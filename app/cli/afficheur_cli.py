@@ -176,13 +176,14 @@ class AfficheurCLI:
 
         # Suppression de la ligne de chargement
         self.reecrire_ligne("\033[K")
+        espace_rayon_laser = " " * index_boucle
         if (self._thread_chargement_termine.is_set()):
             # Message d'animation terminée
-            self.reecrire_ligne(f"{chasseur_gagne}{" " * index_boucle}\033[0m{fantome_perd}\n")
+            self.reecrire_ligne(f"{chasseur_gagne}{espace_rayon_laser}\033[0m{fantome_perd}\n")
             self.affiche_message(f"Analyse terminée! We came, we saw, we logged it.")
         else:
             # Message d'animation erreur
-            self.reecrire_ligne(f"{chasseur_perd}{" " * index_boucle}\033[0m{fantome_gagne}\n")
+            self.reecrire_ligne(f"{chasseur_perd}{espace_rayon_laser}\033[0m{fantome_gagne}\n")
 
     def stop_animation_chargement(self, erreur: bool = False):
         """
