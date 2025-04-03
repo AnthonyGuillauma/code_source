@@ -23,8 +23,8 @@ class AfficheurCLI:
         _animations_actuelles (dict): Les éléments visuels pour l'animation de chargement.
 
     Class-level variables:
-        :cvar COULEUR_MESSAGE_NORMAL: La couleur pour les messages normaux en CLI.
-        :cvar COULEUR_MESSAGE_ERREUR: La couleur pour les messages d'erreur en CLI.
+        :cvar COULEUR_MESSAGE_NORMAL (str): La couleur pour les messages normaux en CLI.
+        :cvar COULEUR_MESSAGE_ERREUR (str): La couleur pour les messages d'erreur en CLI.
     """
     COULEUR_MESSAGE_NORMAL = colorama.Fore.WHITE
     COULEUR_MESSAGE_ERREUR = colorama.Fore.RED
