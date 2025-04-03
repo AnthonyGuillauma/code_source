@@ -24,7 +24,7 @@ def test_main_gestion_exception(mocker, exception):
         - Vérification que les exceptions n'arrête pas le programme.
 
     Args:
-        mocker (any): Une fixture pour simuler des exceptions.
+        mocker (MockerFixture): Une fixture pour simuler des exceptions.
         exception (any): L'exception à simuler.
     """
     mocker.patch("main.ParseurArgumentsCLI", side_effect=exception)
@@ -40,7 +40,7 @@ def test_main_succes(mocker):
             d'un déroulement normal.
 
     Args:
-        mocker (any): Une fixture pour simuler des retours pour les classes
+        mocker (MockerFixture): Une fixture pour simuler des retours pour les classes
             et méthodes dans main.
     """
     # Mock des classes pour simuler un fonctionnement correct
