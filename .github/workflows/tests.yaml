@@ -3,7 +3,7 @@ name: Tests unitaires - LogBuster
 on:
   push:
     branches:
-      - feat/interaction-cli
+      - develop
 
 # Permissions (lecture uniquement)
 permissions:
