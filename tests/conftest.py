@@ -140,8 +140,8 @@ def entree_log_apache(fichier_log_apache):
     ``lignes_valides``.
 
     Args:
-        fichier_log_apache (FichierLogApache): Fixture pour l'instance 
-            de la classe :class:`FichierLogApache`.
+        fichier_log_apache (EntreeLogApache): Fixture pour l'instance 
+            de la classe :class:`EntreeLogApache`.
 
     Returns:
         EntreeLogApache: Une instance de la classe :class:`EntreeLogApache`.
