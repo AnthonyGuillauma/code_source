@@ -3,7 +3,7 @@ name: Tests unitaires - LogBuster
 on:
   push:
     branches:
-      - develop
+      - feat/interaction-cli
 
 # Permissions (lecture uniquement)
 permissions:
@@ -39,7 +39,8 @@ jobs:
       # Étape 4 : Lancer les tests unitaires
       - name: Lancer les tests unitaires
         run: |
-          pytest tests/ --basetemp=resultats_pytest --verbose --cov=app --cov-report=term-missing --cov-report=xml:resultats_pytest/tests-couverture.xml --junitxml=resultats_pytest/tests-rapport.xml
+          cd tests
+          pytest --basetemp=resultats_pytest --verbose --cov=app --cov-report=term-missing --cov-report=xml:resultats_pytest/tests-couverture.xml --junitxml=resultats_pytest/tests-rapport.xml
 
       # Étape 5 : Sauvegarder les artefacts
       - name: Sauvegarder les résultats de test
