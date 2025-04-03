@@ -1,8 +1,6 @@
 """
 Point d'entrée de l'application LogBuster !
 """
-from time import sleep
-import colorama
 from cli.afficheur_cli import AfficheurCLI
 from cli.parseur_arguments_cli import ParseurArgumentsCLI, ArgumentCLIException
 from parse.parseur_log_apache import ParseurLogApache, FormatLogApacheInvalideException
