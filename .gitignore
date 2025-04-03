@@ -5,7 +5,7 @@
 *.pyc
 __pycache__/
 
-# Fichiers propres à Python
+# Fichiers propres à VisualStudioCode
 .vscode/
 .idea/
 
@@ -18,3 +18,6 @@ htmlcov/
 
 # Fichiers de la documentation sphinx
 docs/build/
+
+# Fichier de tests durant le développement
+analyse-log-apache.json
