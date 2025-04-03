@@ -49,4 +49,4 @@ jobs:
         with:
           if-no-files-found: error
           name: tests-resultats-python-${{ matrix.python-version }} # Nom de l'artefact
-          path: tests/resultats_pytest # Eléments à sauvegarder
+          path: resultats_pytest # Eléments à sauvegarder
