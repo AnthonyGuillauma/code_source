@@ -15,10 +15,11 @@ def main():
     afficheur_cli = AfficheurCLI()
     afficheur_cli.affiche_message("Who ya gonna call? LogBuster!")
     try:
-        afficheur_cli.lance_animation_chargement()
         # Récupération des arguments
         parseur_cli = ParseurArgumentsCLI()
         arguments_cli = parseur_cli.parse_args()
+        # Lance l'animation de chargement
+        afficheur_cli.lance_animation_chargement()
         # Analyse syntaxique du fichier log
         parseur_log = ParseurLogApache(arguments_cli.chemin_log)
         fichier_log = parseur_log.parse_fichier()
@@ -28,6 +29,7 @@ def main():
         # Exportation de l'analyse
         exporteur = Exporteur(arguments_cli.sortie)
         exporteur.export_vers_json(analyse)
+        # Termine l'animation de chargement
         afficheur_cli.stop_animation_chargement()
     except Exception as ex:
         gestion_exception(afficheur_cli, ex)
