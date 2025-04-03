@@ -15,14 +15,16 @@ class AfficheurCLI:
     Représente une classe pour afficher des informations dans la ligne de commande.
 
     Attributes:
-        COULEUR_MESSAGE_NORMAL (str): La couleur pour les messages normaux en CLI.
-        COULEUR_MESSAGE_ERREUR (str): La couleur pour les messages d'erreur en CLI.
         _thread_chargement (Union[None,Thread]): Le thread de l'animation de chargement.
         _thread_chargement_termine (Event): L'évènement pour demander au thread de
             l'animation de chargement de s'arrêter lorsque le chargement est terminé.
         _thread_chargement_erreur (Event): L'évènement pour demander au thread de
             l'animation de chargement de s'arrêter lorsque une erreur s'est produite.
         _animations_actuelles (dict): Les éléments visuels pour l'animation de chargement.
+
+    Class-level variables:
+        :cvar COULEUR_MESSAGE_NORMAL: La couleur pour les messages normaux en CLI.
+        :cvar COULEUR_MESSAGE_ERREUR: La couleur pour les messages d'erreur en CLI.
     """
     COULEUR_MESSAGE_NORMAL = colorama.Fore.WHITE
     COULEUR_MESSAGE_ERREUR = colorama.Fore.RED
