@@ -2,8 +2,10 @@
 Module pour analyser les arguments passés en ligne de commande.
 """
 
-from argparse import ArgumentParser
+from argparse import ArgumentParser, Namespace
 from re import match
+from typing import Optional
+
 
 class ParseurArgumentsCLI(ArgumentParser):
     """
@@ -12,6 +14,9 @@ class ParseurArgumentsCLI(ArgumentParser):
     """
 
     def __init__(self):
+        """
+        Initialise uparseur pour analyser les arguments passés en ligne de commande.
+        """
         super().__init__(
             description="LogBuster, l'analyseur de log Apache.", allow_abbrev=False,
         )
@@ -20,6 +25,9 @@ class ParseurArgumentsCLI(ArgumentParser):
     def __set_arguments(self):
         """
         Définit les arguments attendus par l'application.
+
+        Returns:
+            None
         """
         # -- Argument obligatoire --
         self.add_argument(
@@ -37,9 +45,23 @@ class ParseurArgumentsCLI(ArgumentParser):
             "nom 'analyse-log-apache.json' dans le repertoire courant sera crée.",
         )
 
-    def parse_args(self, args=None, namespace=None):
+    def parse_args(self, args: Optional[list] = None, namespace: Optional[Namespace] = None):
         """
-        Analyse, vérifie et retourne les arguments fournis en ligne de commande.
+        Récupère les arguments passés en ligne de commande puis vérifie
+        que leur format est conforme à ceux attendus.
+
+        Args:
+            args (Optional[list]): Liste des arguments passés en paramètre. 
+                Si `None`, les arguments de la ligne de commande sont utilisés.
+            namespace (Optional[argparse.Namespace]): Un espace de noms (namespace) 
+                pour stocker les résultats. Si `None`, un nouvel espace de noms est créé.
+
+        Returns:
+            argparse.Namespace: L'objet contenant les arguments analysés et leurs valeurs.
+        
+        Raises:
+            ArgumentCLIException: Si une erreur se produit lors du parsing des arguments 
+                (par exemple, si un argument inconnu est fourni ou si son format est invalide).
         """
         # Analyse des arguments
         try:
@@ -49,29 +71,33 @@ class ParseurArgumentsCLI(ArgumentParser):
 
         # Vérification syntaxique des arguments
         regex_chemin = r"^[a-zA-Z0-9:_\\\-.\/]+$"
+
         if not match(regex_chemin, arguments_parses.chemin_log):
             raise ArgumentCLIException(
                 "Le chemin du fichier log doit uniquement contenir les caractères autorisés. "
                 "Les caractères autorisés sont les minuscules, majuscules, chiffres ou les "
                 "caractères spéciaux suivants: _, \\, -, /."
             )
+
         if not match(regex_chemin, arguments_parses.sortie):
             raise ArgumentCLIException(
                 "Le chemin du fichier de sortie doit uniquement contenir les caractères "
                 "autorisés. Les caractères autorisés sont les minuscules, majuscules, "
                 "chiffres ou les caractères spéciaux suivants: _, \\, -, /."
             )
+
         if not arguments_parses.sortie.endswith(".json"):
             raise ArgumentCLIException(
                 "Le fichier de sortie doit obligatoirement être un fichier au format json."
             )
-        
+
         return arguments_parses
 
 
 class ArgumentCLIException(Exception):
     """
-    Représente une erreur liée l'analyse d'un argument en ligne de commande.
+    Représente une erreur lorsque un argument passé en ligne de commande
+    est inconnu ou que son format est invalide.
     """
 
     def __init__(self, *args):
