@@ -3,6 +3,7 @@ Module de configuration des tests unitaires.
 """
 
 import pytest
+from cli.afficheur_cli import AfficheurCLI
 from cli.parseur_arguments_cli import ParseurArgumentsCLI
 from parse.parseur_log_apache import ParseurLogApache
 from analyse.analyseur_log_apache import AnalyseurLogApache
@@ -46,6 +47,10 @@ lignes_invalides = [
 # ------------------
 # Fixtures générales
 # ------------------
+
+@pytest.fixture
+def afficheur_cli():
+    return AfficheurCLI()
 
 @pytest.fixture
 def parseur_arguments_cli():

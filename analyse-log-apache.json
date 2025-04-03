@@ -1,0 +1,77 @@
+{
+    "chemin": "C:\\Users\\Work\\App\\Xampp\\apache\\logs\\access.log",
+    "statistiques": {
+        "total_entrees": 17594,
+        "requetes": {
+            "top_urls": [
+                {
+                    "url": "/assets/icons/muted.png",
+                    "total": 665,
+                    "taux": 3.7796976241900646
+                },
+                {
+                    "url": "/style/Header.css",
+                    "total": 616,
+                    "taux": 3.501193588723429
+                },
+                {
+                    "url": "/assets/icon.ico",
+                    "total": 595,
+                    "taux": 3.381834716380584
+                }
+            ],
+            "repartition_code_statut_http": [
+                {
+                    "code": 200,
+                    "total": 14996,
+                    "taux": 85.23360236444243
+                },
+                {
+                    "code": 304,
+                    "total": 1494,
+                    "taux": 8.491531203819484
+                },
+                {
+                    "code": 206,
+                    "total": 604,
+                    "taux": 3.432988518813232
+                },
+                {
+                    "code": 404,
+                    "total": 230,
+                    "taux": 1.307263839945436
+                },
+                {
+                    "code": 302,
+                    "total": 188,
+                    "taux": 1.0685460952597476
+                },
+                {
+                    "code": 403,
+                    "total": 40,
+                    "taux": 0.22735023303398885
+                },
+                {
+                    "code": 500,
+                    "total": 20,
+                    "taux": 0.11367511651699443
+                },
+                {
+                    "code": 301,
+                    "total": 13,
+                    "taux": 0.07388882573604638
+                },
+                {
+                    "code": 400,
+                    "total": 6,
+                    "taux": 0.03410253495509833
+                },
+                {
+                    "code": 408,
+                    "total": 3,
+                    "taux": 0.017051267477549165
+                }
+            ]
+        }
+    }
+}
