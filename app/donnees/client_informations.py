@@ -36,11 +36,11 @@ class ClientInformations:
         if not isinstance(self.adresse_ip, str):
             raise TypeError("L'adresse IP est obligatoire et doit être une chaîne de caractères.")
         # Validation de l'identifiant RFC
-        if self.identifiant_rfc != None and not isinstance(self.identifiant_rfc, str):
+        if self.identifiant_rfc is not None and not isinstance(self.identifiant_rfc, str):
             raise TypeError("L'identifiant RFC doit être une chaîne de caractères ou None.")
         # Validation du nom d'utilisateur
-        if self.nom_utilisateur != None and not isinstance(self.nom_utilisateur, str):
+        if self.nom_utilisateur is not None and not isinstance(self.nom_utilisateur, str):
             raise TypeError("Le nom d'utilisateur doit être une chaîne de caractères ou None.")
         # Validation de l'agent utilisateur
-        if self.agent_utilisateur != None and not isinstance(self.agent_utilisateur, str):
+        if self.agent_utilisateur is not None and not isinstance(self.agent_utilisateur, str):
             raise TypeError("L'agent utilisateur doit être une chaîne de caractères ou None.")
