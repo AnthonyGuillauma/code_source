@@ -11,7 +11,7 @@ class FichierLogApache:
     """
     Représente un fichier de log Apache.
 
-    Attributes:
+    Args:
         chemin (str): Le chemin du fichier.
         entrees (list): La liste des entrées du fichier.
     """
