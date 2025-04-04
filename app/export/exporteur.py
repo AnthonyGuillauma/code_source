@@ -26,18 +26,34 @@ class Exporteur:
         
         Raises:
             TypeError: Le chemin de sortie n'est pas une chaîne de caractère.
-            ExportationException: Exportation impossible à cause de
-                l'emplacement invalide du fichier de sortie.
+            ExportationDossierParentException: Exportation impossible à cause de
+                l'inexistance du dossier parent du fichier d'exportation.
         """
         if not isinstance(chemin_sortie, str):
             raise TypeError("Le chemin de sortie doit être une chaîne de caractère.")
+        self.verification_exportation_possible(chemin_sortie)
+        self._chemin_sortie = chemin_sortie
+
+    def verification_exportation_possible(self, chemin_sortie: str) -> None:
+        """
+        Vérifie qu'une exportation est possible vers le chemin du fichier indiqué. Renvoie une
+        exception expliquant le problème si elle n'est pas possible.
+
+        Args:
+            chemin_sortie (str): Le chemin du fichier d'exportation.
+
+        Returns:
+            None
+
+        Raises:
+            ExportationDossierParentException: Le dossier parent du fichier n'existe pas.
+        """
         chemin_sortie_absolue = abspath(chemin_sortie)
         dossier_parent = dirname(chemin_sortie_absolue)
         if not isdir(dossier_parent):
-            raise ExportationException(f"Impossible d'exporter vers le "
+            raise ExportationDossierParentException(f"Impossible d'exporter vers le "
                                        f"fichier {chemin_sortie}, son dossier parent "
                                        f"{dossier_parent} n'existe pas.")
-        self._chemin_sortie = chemin_sortie
 
     def export_vers_json(self, donnees: dict):
         """
@@ -56,9 +72,9 @@ class Exporteur:
         if not isinstance(donnees, dict):
             raise TypeError("Les données à exporter doivent être sous une forme "
             "de dictionnaire.")
-        
+
         try:
-            with open(self._chemin_sortie, 'w') as fichier:
+            with open(self._chemin_sortie, 'w', encoding="utf-8") as fichier:
                 dump(donnees, fichier, indent=4)
         except Exception as ex:
             raise ExportationException(str(ex)) from ex
@@ -67,6 +83,9 @@ class ExportationException(Exception):
     """
     Représente une erreur lors de l'exportation de données.
     """
-    
-    def __init__(self, *args):
-        super().__init__(*args)
+
+class ExportationDossierParentException(ExportationException):
+    """
+    Représente une erreur lorsque une exportation est impossible
+    lorsque le dossier parent du fichier d'exportation n'existe pas.
+    """
