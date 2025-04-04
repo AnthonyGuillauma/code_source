@@ -5,7 +5,8 @@ Module pour parser un fichier log Apache.
 import os
 from re import match
 from datetime import datetime
-from parse.fichier_log_apache import FichierLogApache, EntreeLogApache
+from parse.fichier_log_apache import FichierLogApache
+from parse.entree_log_apache import EntreeLogApache
 from donnees.client_informations import ClientInformations
 from donnees.requete_informations import RequeteInformations
 from donnees.reponse_informations import ReponseInformations
