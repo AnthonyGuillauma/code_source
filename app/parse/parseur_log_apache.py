@@ -97,8 +97,8 @@ class ParseurLogApache():
             FormatLogApacheInvalideException: Format de l'entrée du fichier log invalide.
         """
         # Vérification du type du paramètre
-        if not isinstance(entree, EntreeLogApache):
-            raise TypeError("L'entrée doit être représentée avec un objet EntreeLogApache")
+        if not isinstance(entree, str):
+            raise TypeError("L'entrée doit être représentée sous forme de chaîne de caractères.")
 
         # Analyse de l'entrée
         analyse = match(self.PATTERN_ENTREE_LOG_APACHE, entree)
