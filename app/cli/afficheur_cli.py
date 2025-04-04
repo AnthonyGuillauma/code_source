@@ -52,7 +52,7 @@ class AfficheurCLI:
             "rayon_laser": elements_animations["rayons_laser"]
         }
 
-    def reecrire_ligne(self, message: str):
+    def reecrire_ligne(self, message: str) -> None:
         """
         Permet d'écrire des caractères par dessus la dernière ligne dans la
         ligne de commande.
@@ -69,11 +69,12 @@ class AfficheurCLI:
         # Validation du paramètre
         if not isinstance(message, str):
             raise TypeError("Le message pour la réécriture doit être une chaîne de caractères.")
+
         # Ecriture du message
         sys.stdout.write("\r" + self.COULEUR_MESSAGE_NORMAL + message)
         sys.stdout.flush()
 
-    def affiche_message(self, message: str):
+    def affiche_message(self, message: str) -> None:
         """
         Permet d'écrire un message commun dans la ligne de commande avec la bonne
         couleur.
@@ -90,10 +91,11 @@ class AfficheurCLI:
         # Validation du paramètre
         if not isinstance(message, str):
             raise TypeError("Le message doit être une chaîne de caractères.")
+
         # Ecriture du message
         print(self.COULEUR_MESSAGE_NORMAL + message, flush=True)
 
-    def affiche_erreur(self, message: str, exception: Exception):
+    def affiche_erreur(self, message: str, exception: Exception) -> None:
         """
         Permet d'écrire un message d'erreur dans la ligne de commande avec la bonne
         couleur.
@@ -114,10 +116,11 @@ class AfficheurCLI:
             raise TypeError("Le message d'erreur doit être une chaîne de caractères.")
         if not isinstance(exception, Exception):
             raise TypeError("L'exception à afficher doit être une instance de Exception.")
+
         # Ecriture du message
         print(self.COULEUR_MESSAGE_ERREUR + f"{message}\n{exception}", flush=True)
 
-    def lance_animation_chargement(self):
+    def lance_animation_chargement(self) -> None:
         """
         Lance une animation de chargement dans la ligne de commande via un thread non bloquant.
         Si l'animation de chargement est déjà en cours, cette méthode ne fait rien.
@@ -136,7 +139,7 @@ class AfficheurCLI:
             # Lancement du thread pour le chargement
             self._thread_chargement.start()
 
-    def _animation_chargement(self):
+    def _animation_chargement(self) -> None:
         """
         Lance l'animation de chargement en boucle jusqu'à la demande d'arrêt via
         l'attribut :attr:`_thread_chargement_demande_arret`.
@@ -191,7 +194,7 @@ class AfficheurCLI:
             # Message d'animation erreur
             self.reecrire_ligne(f"{chasseur_perd}{espace_rayon_laser}\033[0m{fantome_gagne}\n")
 
-    def stop_animation_chargement(self, erreur: bool = False):
+    def stop_animation_chargement(self, erreur: bool = False) -> None:
         """
         Lance une demande d'arrêt au thread qui gère l'animation de chargement
         en cours. Si aucune animation n'est en cours, cette méthode ne fait rien.
@@ -202,6 +205,10 @@ class AfficheurCLI:
         Returns:
             None
         """
+        # Vérification du type du paramètre
+        if not isinstance(erreur, bool):
+            raise TypeError("L'indication d'une erreur doit être un booléan.")
+
         # Si le thread de chargement existe et est lancé
         if self._thread_chargement and self._thread_chargement.is_alive():
             # Lancement de la demade d'arrêt

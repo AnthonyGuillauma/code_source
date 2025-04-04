@@ -19,15 +19,18 @@ class ReponseInformations:
         code_statut_http (int): Le code de statut HTTP.
         taille_octets (Optional[int]): La taille de la réponse en octets.
             Peut être None si non fournie.
-
-    Raises:
-        TypeError: Si les attributs ne sont pas du type int.
     """
 
     code_statut_http: int
     taille_octets: Optional[int]
 
     def __post_init__(self):
+        """
+        Vérifie le bon type des données de cette classe lors de l'initialisation de l'instance.
+
+        Raises:
+            TypeError: Une donnée n'est pas du bon type.
+        """
         # Vérification du code de statut HTTP
         if (not isinstance(self.code_statut_http, int)
         or isinstance(self.code_statut_http, bool)):

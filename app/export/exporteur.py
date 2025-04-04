@@ -29,9 +29,12 @@ class Exporteur:
             ExportationDossierParentException: Exportation impossible à cause de
                 l'inexistance du dossier parent du fichier d'exportation.
         """
+        # Vérification du type du paramètre
         if not isinstance(chemin_sortie, str):
             raise TypeError("Le chemin de sortie doit être une chaîne de caractère.")
+        # Vérification du chemin d'exportation
         self.verification_exportation_possible(chemin_sortie)
+        # Ajout du chemin d'exportation
         self._chemin_sortie = chemin_sortie
 
     def verification_exportation_possible(self, chemin_sortie: str) -> None:
@@ -48,6 +51,10 @@ class Exporteur:
         Raises:
             ExportationDossierParentException: Le dossier parent du fichier n'existe pas.
         """
+        # Vérification du type du paramètre
+        if not isinstance(chemin_sortie, str):
+            raise TypeError("Le chemin de sortie doit être une chaîne de caractères.")
+        # Vérification du chemin
         chemin_sortie_absolue = abspath(chemin_sortie)
         dossier_parent = dirname(chemin_sortie_absolue)
         if not isdir(dossier_parent):
@@ -55,7 +62,7 @@ class Exporteur:
                                        f"fichier {chemin_sortie}, son dossier parent "
                                        f"{dossier_parent} n'existe pas.")
 
-    def export_vers_json(self, donnees: dict):
+    def export_vers_json(self, donnees: dict) -> None:
         """
         Export le dictionnaire fourni vers le :attr:`chemin de sortie`.
 
@@ -69,10 +76,11 @@ class Exporteur:
             TypeError: Le paramètre ``donnees`` n'est pas un dictionnaire.
             ExportationException: Une erreur lors de l'écriture dans le fichier JSON.
         """
+        # Vérification du type du paramètre
         if not isinstance(donnees, dict):
             raise TypeError("Les données à exporter doivent être sous une forme "
             "de dictionnaire.")
-
+        # Exportation
         try:
             with open(self._chemin_sortie, 'w', encoding="utf-8") as fichier:
                 dump(donnees, fichier, indent=4)

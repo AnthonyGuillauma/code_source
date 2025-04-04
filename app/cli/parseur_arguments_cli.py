@@ -22,7 +22,7 @@ class ParseurArgumentsCLI(ArgumentParser):
         )
         self.__set_arguments()
 
-    def __set_arguments(self):
+    def __set_arguments(self) -> None:
         """
         Définit les arguments attendus par l'application.
 
@@ -45,24 +45,32 @@ class ParseurArgumentsCLI(ArgumentParser):
             "nom 'analyse-log-apache.json' dans le repertoire courant sera crée.",
         )
 
-    def parse_args(self, args: Optional[list] = None, namespace: Optional[Namespace] = None):
+    def parse_args(self,
+                   args: Optional[list] = None,
+                   namespace: Optional[Namespace] = None) -> Namespace:
         """
         Récupère les arguments passés en ligne de commande puis vérifie
         que leur format est conforme à ceux attendus.
 
         Args:
             args (Optional[list]): Liste des arguments passés en paramètre. 
-                Si `None`, les arguments de la ligne de commande sont utilisés.
-            namespace (Optional[argparse.Namespace]): Un espace de noms (namespace) 
-                pour stocker les résultats. Si `None`, un nouvel espace de noms est créé.
+                Si ``None``, les arguments de la ligne de commande sont utilisés.
+            namespace (Optional[Namespace]): Un espace de noms (namespace) 
+                pour stocker les résultats. Si ``None``, un nouvel espace de noms est créé.
 
         Returns:
-            argparse.Namespace: L'objet contenant les arguments analysés et leurs valeurs.
+            Namespace: L'objet contenant les arguments analysés et leurs valeurs.
         
         Raises:
             ArgumentCLIException: Si une erreur se produit lors du parsing des arguments 
                 (par exemple, si un argument inconnu est fourni ou si son format est invalide).
         """
+        # Vérification du type des paramètres
+        if args is not None and not isinstance(args, list):
+            raise TypeError("Les arguments doivent soit être None, soit être dans une liste.")
+        if namespace is not None and not isinstance(args, Namespace):
+            raise TypeError("L'espace de noms doit soit être None, soit être un objet Namespace.")
+
         # Analyse des arguments
         try:
             arguments_parses = super().parse_args(args, namespace)

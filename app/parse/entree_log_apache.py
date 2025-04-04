@@ -23,6 +23,12 @@ class EntreeLogApache:
     reponse: ReponseInformations
 
     def __post_init__(self):
+        """
+        Vérifie le bon type des données de cette classe lors de l'initialisation de l'instance.
+
+        Raises:
+            TypeError: Une donnée n'est pas du bon type.
+        """
         # Validation des informations
         if not isinstance(self.client, ClientInformations):
             raise TypeError(

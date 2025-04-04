@@ -8,9 +8,12 @@ from analyse.analyseur_log_apache import AnalyseurLogApache
 from export.exporteur import Exporteur, ExportationException
 
 
-def main():
+def main() -> None:
     """
     Point d'entrée de l'application.
+
+    Returns:
+        None
     """
     afficheur_cli = AfficheurCLI()
     afficheur_cli.affiche_message("Who ya gonna call? LogBuster!")
@@ -40,7 +43,7 @@ def main():
     except (ValueError, TypeError) as ex:
         gestion_exception(afficheur_cli, "Erreur interne !", ex)
 
-def gestion_exception(afficheur_cli, message, exception):
+def gestion_exception(afficheur_cli: AfficheurCLI, message: str, exception: Exception) -> None:
     """
     Gère les erreurs qui demandent une fin du programme.
     Affiche un message d'erreur personnalisé ainsi que les détails de l'exception.

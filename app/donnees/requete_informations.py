@@ -25,9 +25,6 @@ class RequeteInformations:
             Peut être None si non fournie.
         ancienne_url (Optional[str]): L'URL de provenance (referrer).
             Peut être None si non fournie.
-
-    Raises:
-        TypeError: Si les attributs ne sont pas du type attendu ou None.
     """
     horodatage: datetime
     methode_http: Optional[str]
@@ -36,6 +33,12 @@ class RequeteInformations:
     ancienne_url: Optional[str]
 
     def __post_init__(self):
+        """
+        Vérifie le bon type des données de cette classe lors de l'initialisation de l'instance.
+
+        Raises:
+            TypeError: Une donnée n'est pas du bon type.
+        """
         # Vérification de l'horodatage
         if not isinstance(self.horodatage, datetime):
             raise TypeError("L'horodatage doit être de type datetime.")

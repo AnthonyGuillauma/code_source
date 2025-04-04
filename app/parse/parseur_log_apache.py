@@ -5,6 +5,7 @@ Module pour parser un fichier log Apache.
 import os
 from re import match
 from datetime import datetime
+from typing import Optional
 from parse.fichier_log_apache import FichierLogApache
 from parse.entree_log_apache import EntreeLogApache
 from donnees.client_informations import ClientInformations
@@ -21,7 +22,7 @@ class ParseurLogApache():
         PATTERN_ENTREE_LOG_APACHE (str): Le pattern regex d'une entrée dans un log Apache.
     """
 
-    PATTERN_ENTREE_LOG_APACHE = (
+    PATTERN_ENTREE_LOG_APACHE: str = (
         r'(?P<ip>\S+) (?P<rfc>\S+) (?P<utilisateur>\S+)'
         r' (\[(?P<horodatage>\d{2}\/\w{3}\/\d{4}:\d{1,2}:\d{1,2}:\d{1,2} \+\d{4})\]|-)'
         r' "((?P<methode>\S+) (?P<url>\S+) (?P<protocole>\S+)|-)"'
@@ -38,13 +39,19 @@ class ParseurLogApache():
             chemin_log (str): Le chemin du fichier à analyser.
 
         Raises:
+            TypeError: Le chemin ``chemin_log`` n'est pas de type ``str``.
             FichierLogApacheIntrouvableException: Si le fichier à analyser est introuvable.
         """
+        # Vérification du type du paramètre
+        if not isinstance(chemin_log, str):
+            raise TypeError("Le chemin du log doit être une chaîne de caractères.")
+        # Vérification du chemin
         if not os.path.isfile(chemin_log):
             raise FichierLogApacheIntrouvableException(f"Le fichier {chemin_log} est introuvable.")
+        # Ajout du chemin
         self.chemin_log = chemin_log
 
-    def parse_fichier(self):
+    def parse_fichier(self) -> FichierLogApache:
         """
         Effectue une analyse syntaxique du fichier de log Apache puis retourne
         une représentation du fichier avec les informations trouvées.
@@ -55,10 +62,14 @@ class ParseurLogApache():
         Raises:
             FormatLogApacheInvalideException: Format du fichier log invalide.
         """
+        # Initialisation de la représentation du fichier
         log_analyse = FichierLogApache(self.chemin_log)
+        # Ouverture du log
         with open(self.chemin_log, "r", encoding="utf-8") as log:
+            # Parcours des entrées du log
             for numero_ligne, ligne in enumerate(log, start=1):
                 try:
+                    # Parsage de l'entrée
                     entree = self.parse_entree(ligne)
                     log_analyse.ajoute_entree(entree)
                 except FormatLogApacheInvalideException as ex:
@@ -69,7 +80,7 @@ class ParseurLogApache():
 
         return log_analyse
 
-    def parse_entree(self, entree):
+    def parse_entree(self, entree: str) -> EntreeLogApache:
         """
         Effectue une analyse syntaxique d'une entrée dans un fichier de log
         Apache puis retourne une représentation de l'entrée avec les
@@ -82,8 +93,13 @@ class ParseurLogApache():
             entree_analysee (EntreeLogApache): Représentation de l'entrée.
 
         Raises:
+            TypeError: L'entrée ``entree`` n'est pas de type :class:`EntreeLogApache`
             FormatLogApacheInvalideException: Format de l'entrée du fichier log invalide.
         """
+        # Vérification du type du paramètre
+        if not isinstance(entree, EntreeLogApache):
+            raise TypeError("L'entrée doit être représentée avec un objet EntreeLogApache")
+
         # Analyse de l'entrée
         analyse = match(self.PATTERN_ENTREE_LOG_APACHE, entree)
         if not analyse:
@@ -117,8 +133,13 @@ class ParseurLogApache():
             ClientInformations: Les informations du client.
 
         Raises:
+            TypeError: L'analyse ``analyse_regex`` n'est pas un ``dict``.
             FormatLogApacheInvalideException: L'adresse IP n'est pas présente dans l'analyse.
         """
+        # Vérification du type du paramètre
+        if not isinstance(analyse_regex, dict):
+            raise TypeError("L'analyse du regex doit être un dictionnaire.")
+
         # Adresse IP
         adresse_ip = self.get_information_entree(analyse_regex, "ip")
         if adresse_ip is None:
@@ -142,11 +163,16 @@ class ParseurLogApache():
             analyse_regex (dict): Analyse regex d'une entrée.
 
         Returns:
-            ClientInformations: Les informations de la requête.
+            RequeteInformations: Les informations de la requête.
 
         Raises:
+            TypeError: L'analyse ``analyse_regex`` n'est pas un ``dict``.
             FormatLogApacheInvalideException: L'horodatage n'est pas présente dans l'analyse.
         """
+        # Vérification du type du paramètre
+        if not isinstance(analyse_regex, dict):
+            raise TypeError("L'analyse du regex doit être un dictionnaire.")
+
         # Horodatage
         horodatage = self.get_information_entree(analyse_regex, "horodatage")
         if horodatage:
@@ -174,8 +200,13 @@ class ParseurLogApache():
             analyse_regex (dict): Analyse regex d'une entrée.
 
         Returns:
-            ClientInformations: Les informations de la réponse.
+            TypeError: L'analyse ``analyse_regex`` n'est pas un ``dict``.
+            ReponseInformations: Les informations de la réponse.
         """
+        # Vérification du type du paramètre
+        if not isinstance(analyse_regex, dict):
+            raise TypeError("L'analyse du regex doit être un dictionnaire.")
+
         # Code de statut
         code_statut = self.get_information_entree(analyse_regex, "code_status")
         code_statut = int(code_statut)
@@ -188,17 +219,27 @@ class ParseurLogApache():
             code_statut, taille_octets
         )
 
-    def get_information_entree(self, analyse_regex: dict, nom_information: str):
+    def get_information_entree(self, analyse_regex: dict, nom_information: str) -> Optional[str]:
         """
         Retourne la valeur de l'information dans l'analyse si elle possède une valeur
         ou None si elle ne possède pas de valeur (égale à - ou vide).
+
         Args:
             analyse_regex (Match[str]): Résultat du regex de l'analyse.
             nom_information (str): Nom de l'information souhaitée.
+        
         Returns:
-            Union[str, None]: La valeur sous forme de chaîne de caractère ou None si
+            TypeError: Un paramètre n'a pas le bon type.
+            Optional[str]: La valeur sous forme de chaîne de caractère ou None si
                 aucune valeur n'a été trouvée.
         """
+        # Vérification du type des paramètres
+        if not isinstance(analyse_regex, dict):
+            raise TypeError("L'analyse du regex doit être un dictionnaire.")
+        if not isinstance(nom_information, str):
+            raise TypeError("Le nom de l'information doit être une chaîne de caractères.")
+
+        # Récupération de l'information
         valeur = analyse_regex.get(nom_information)
         return valeur if valeur not in ("", "-") else None
 

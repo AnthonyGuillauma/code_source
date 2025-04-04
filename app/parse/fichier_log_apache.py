@@ -19,6 +19,12 @@ class FichierLogApache:
     entrees: list = field(default_factory=list)
 
     def __post_init__(self):
+        """
+        Vérifie le bon type des données de cette classe lors de l'initialisation de l'instance.
+
+        Raises:
+            TypeError: Une donnée n'est pas du bon type.
+        """
         # Validation du chemin
         if not isinstance (self.chemin, str):
             raise TypeError("Le chemin du fichier doit être une chaîne de caractère.")
@@ -36,9 +42,9 @@ class FichierLogApache:
             None
 
         Raises:
-            TypeError: L'entrée n'est pas un objet EntreeLogApache.
+            TypeError: L'entrée ``entree`` n'est pas un objet :class:`EntreeLogApache`.
         """
-        # Validation du paramètre
+        # Vérification du type du paramètre
         if not isinstance (entree, EntreeLogApache):
             raise TypeError("Les informations de l'entrée doivent être dans un objet"
                 "EntreeLogApache.")

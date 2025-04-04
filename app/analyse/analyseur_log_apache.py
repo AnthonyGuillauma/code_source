@@ -32,12 +32,16 @@ class AnalyseurLogApache:
                 ou si l'argument ``nombre_par_top`` n'est pas un entier.
             ValueError: Si l'argument ``nombre_par_top`` est inférieur à ``0``.
         """
+        # Vérification du type des paramètres
         if not isinstance(fichier_log_apache, FichierLogApache):
             raise TypeError("La représentation du fichier doit être de type FichierLogApache.")
         if not isinstance(nombre_par_top, int) or isinstance(nombre_par_top, bool):
             raise TypeError("Le nombre par top doit être un entier.")
+        # Vérification de la valeur du paramètre
         if nombre_par_top < 0:
             raise ValueError("Le nombre par top doit être supérieur ou égale à 0.")
+
+        # Ajout des données
         self.fichier = fichier_log_apache
         self.nombre_par_top = nombre_par_top
 
@@ -65,6 +69,7 @@ class AnalyseurLogApache:
                 :attr:`nombre_par_top` éléments, mais peut en contenir moins s'il y a moins 
                 de :attr:`nombre_par_top` éléments distincts.
         """
+        # Vérification du type des paramètres
         if not isinstance(liste_elements, list):
             raise TypeError("La liste des éléments doit être une instance du type list.")
         if not isinstance(nom_elements, str):
@@ -73,6 +78,7 @@ class AnalyseurLogApache:
             raise TypeError("L'indication de l'activation du mode 'top_classement' "
                 "doit être un booléen.")
 
+        # Analyse de la liste
         total_elements = len(liste_elements)
         compteur_elements = Counter(liste_elements)
         top_elements = compteur_elements.most_common(self.nombre_par_top

@@ -22,9 +22,6 @@ class ClientInformations:
             Peut être None si non fournie.
         agent_utilisateur (Optional[str]): L'agent utilisateur (User-Agent). 
             Peut être None si non fournie.
-
-    Raises:
-        TypeError: Si les attributs ne sont pas de type `str` ou `None`.
     """
     adresse_ip: str
     identifiant_rfc: Optional[str]
@@ -32,6 +29,12 @@ class ClientInformations:
     agent_utilisateur: Optional[str]
 
     def __post_init__(self):
+        """
+        Vérifie le bon type des données de cette classe lors de l'initialisation de l'instance.
+
+        Raises:
+            TypeError: Une donnée n'est pas du bon type.
+        """
         # Validation de l'adresse IP
         if not isinstance(self.adresse_ip, str):
             raise TypeError("L'adresse IP est obligatoire et doit être une chaîne de caractères.")
