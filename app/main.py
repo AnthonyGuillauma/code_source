@@ -3,7 +3,7 @@ Point d'entrée de l'application LogBuster !
 """
 from cli.afficheur_cli import AfficheurCLI
 from cli.parseur_arguments_cli import ParseurArgumentsCLI, ArgumentCLIException
-from parse.parseur_log_apache import ParseurLogApache, FormatLogApacheInvalideException
+from parse.parseur_log_apache import ParseurLogApache, ParsageLogApacheException
 from analyse.analyseur_log_apache import AnalyseurLogApache
 from export.exporteur import Exporteur, ExportationException
 
@@ -33,9 +33,7 @@ def main():
         afficheur_cli.stop_animation_chargement()
     except ArgumentCLIException as ex:
         gestion_exception(afficheur_cli, "Erreur dans les arguments fournis !", ex)
-    except FileNotFoundError as ex:
-        gestion_exception(afficheur_cli, "Erreur dans la recherche du log Apache !", ex)
-    except FormatLogApacheInvalideException as ex:
+    except ParsageLogApacheException as ex:
         gestion_exception(afficheur_cli, "Erreur dans l'analyse du log Apache !", ex)
     except ExportationException as ex:
         gestion_exception(afficheur_cli, "Erreur dans l'exportation de l'analyse !", ex)
