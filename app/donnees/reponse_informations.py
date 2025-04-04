@@ -15,7 +15,7 @@ class ReponseInformations:
     qui concernent les informations techniques sur la réponse émise par
     le serveur Apache au client.
 
-    Args:
+    Attributes:
         code_statut_http (int): Le code de statut HTTP.
         taille_octets (Optional[int]): La taille de la réponse en octets.
             Peut être None si non fournie.

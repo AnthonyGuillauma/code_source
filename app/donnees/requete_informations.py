@@ -15,7 +15,7 @@ class RequeteInformations:
     qui concernent les informations techniques sur la requête émise au
     serveur Apache.
 
-    Args:
+    Attributes:
         horodatage (datetime): L'horodatage de la requête.
         methode_http (Optional[str]): La méthode HTTP utilisée.
             Peut être None si non fournie.

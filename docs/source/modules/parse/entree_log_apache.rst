@@ -5,3 +5,4 @@ EntreeLogApache
    :members:
    :show-inheritance:
    :undoc-members:
+   :exclude-members: client, requete, reponse

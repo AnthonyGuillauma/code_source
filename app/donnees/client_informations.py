@@ -14,7 +14,7 @@ class ClientInformations:
     Cette classe regroupe les données extraites d'une entrée de log,
     qui concernent le client ayant effectué la requête au serveur Apache.
 
-    Args:
+    Attributes:
         adresse_ip (str): L'adresse IP du client.
         identifiant_rfc (Optional[str]): L'identifiant RFC du client. 
             Peut être None si non fournie.

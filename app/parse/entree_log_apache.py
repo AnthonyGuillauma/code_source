@@ -13,10 +13,10 @@ class EntreeLogApache:
     """
     Représente une entrée dans un fichier de log Apache.
 
-    Args:
-        informations_client (ClientInformations): Les informations du client.
-        informations_requete (RequeteInformations): Les informations de la requête.
-        informations_reponse (ReponseInformations): Les informations de la réponse.
+    Attributes:
+        client (ClientInformations): Les informations du client.
+        requete (RequeteInformations): Les informations de la requête.
+        reponse (ReponseInformations): Les informations de la réponse.
     """
     client: ClientInformations
     requete: RequeteInformations
