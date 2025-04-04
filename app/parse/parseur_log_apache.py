@@ -18,8 +18,8 @@ class ParseurLogApache():
     Représente un parseur pour faire une analyse synthaxique d'un fichier
     log Apache.
 
-    Attributes:
-        PATTERN_ENTREE_LOG_APACHE (str): Le pattern regex d'une entrée dans un log Apache.
+    Class-level variables:
+        :cvar PATTERN_ENTREE_LOG_APACHE (str): Le pattern regex d'une entrée dans un log Apache.
     """
 
     PATTERN_ENTREE_LOG_APACHE: str = (
@@ -229,9 +229,11 @@ class ParseurLogApache():
             nom_information (str): Nom de l'information souhaitée.
         
         Returns:
-            TypeError: Un paramètre n'a pas le bon type.
             Optional[str]: La valeur sous forme de chaîne de caractère ou None si
                 aucune valeur n'a été trouvée.
+
+        Raises:
+            TypeError: Un paramètre n'a pas le bon type.
         """
         # Vérification du type des paramètres
         if not isinstance(analyse_regex, dict):
