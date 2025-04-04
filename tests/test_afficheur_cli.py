@@ -169,6 +169,23 @@ def test_afficheur_cli_lance_animation_chargement(mocker, afficheur_cli):
     assert afficheur_cli._thread_chargement is not None
     assert afficheur_cli._thread_chargement.is_alive()
 
+def test_afficheur_cli_exception_stop_animation_chargment_type_invalide(afficheur_cli):
+    """
+    Vérifie que la méthode stop_animation_chargement renvoie une erreur lorsque le type
+    de son paramètre est invalide.
+
+    Scénarios testés:
+        - Paramètre ``erreur`` avec un mauvais type.
+
+    Asserts:
+        - Une exception :class:`TypeError` est levée.
+
+    Args:
+        afficheur_cli (AfficheurCLI): Fixture pour l'instance de la classe ``AfficheurCLI``.
+    """
+    with pytest.raises(TypeError):
+        afficheur_cli.stop_animation_chargement("False")
+
 def test_afficheur_cli_stop_animation_chargement_terminee(afficheur_cli):
     """
     Vérifie que la méthode stop_animation_chargement arrête correctement l'animation en

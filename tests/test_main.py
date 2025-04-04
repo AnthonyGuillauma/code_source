@@ -3,22 +3,25 @@ Module des tests unitaires pour le point d'entrée de l'application.
 """
 
 import pytest
-import sys
 from main import main
 from cli.parseur_arguments_cli import ArgumentCLIException
 from parse.parseur_log_apache import FormatLogApacheInvalideException
 from export.exporteur import ExportationException
 
-@pytest.mark.parametrize("exception", [
-    (ArgumentCLIException),
-    (FileNotFoundError),
-    (FormatLogApacheInvalideException),
-    (ExportationException),
-    (Exception)
-])
+
+@pytest.mark.parametrize(
+    "exception",
+    [
+        (ArgumentCLIException),
+        (FormatLogApacheInvalideException),
+        (ExportationException),
+        (TypeError),
+        (ValueError),
+    ],
+)
 def test_main_gestion_exception(mocker, exception):
     """
-    Vérifie que les exceptions sont interceptées dans fichier principal.
+    Vérifie que les exceptions attendues sont interceptées dans fichier principal.
 
     Scénarios testés:
         - Vérification que les exceptions n'arrête pas le programme.
@@ -45,16 +48,20 @@ def test_main_succes(mocker):
     """
     # Mock des classes pour simuler un fonctionnement correct
     mock_parseur_cli = mocker.patch("main.ParseurArgumentsCLI")
-    mock_parseur_cli.return_value.parse_args.return_value = mocker.MagicMock(chemin_log="test.log")
-    
+    mock_parseur_cli.return_value.parse_args.return_value = mocker.MagicMock(
+        chemin_log="test.log"
+    )
+
     mock_parseur_log = mocker.patch("main.ParseurLogApache")
     mock_parseur_log.return_value.parse_fichier.return_value = mocker.MagicMock()
-    
+
     mock_analyseur_log = mocker.patch("main.AnalyseurLogApache")
-    mock_analyseur_log.return_value.get_analyse_complete.return_value = {"chemin": "test.log"}
+    mock_analyseur_log.return_value.get_analyse_complete.return_value = {
+        "chemin": "test.log"
+    }
 
     mocker.patch("main.Exporteur")
-    
+
     # Vérifie qu'aucune exception n'est levée
     try:
         main()

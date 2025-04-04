@@ -40,10 +40,27 @@ def test_exporteur_emplacement_inexistant():
     with pytest.raises(ExportationException):
         exporteur = Exporteur("dossier/inexistant/sortie.json")
 
+def test_exporteur_verification_exception_exportation_possible_type_invalide(exporteur):
+    """
+    Vérifie que la méthode verification_exportation_possible renvoie une erreur lorsque le type
+    de son paramètre est invalide.
+
+    Scénarios testés:
+        - Paramètre ``chemin_sortie`` avec un mauvais type.
+
+    Asserts:
+        - Une exception :class:`TypeError` est levée.
+
+    Args:
+        exporteur (Exporteur) : Fixture pour l'instance de la classe :class:`Exporteur`.
+    """
+    with pytest.raises(TypeError):
+        exporteur.verification_exportation_possible(False)
+
 @pytest.mark.parametrize("donnees", [
     (0), (None), ([])
 ])
-def test_exportateur_export_json_type_donnees_invalide(exporteur, donnees):
+def test_exporteur_export_json_type_donnees_invalide(exporteur, donnees):
     """
     Vérifie que la classe renvoie une erreur lorsque un argument de type invalide
     est passé dans la méthode ``export_vers_json``.
@@ -66,7 +83,7 @@ def test_exportateur_export_json_type_donnees_invalide(exporteur, donnees):
     (FileNotFoundError("Fichier non trouvé.")),
     (Exception("Toutes exceptions"))
 ])
-def test_exportateur_export_json_exception_exportation(exporteur, mocker, exception):
+def test_exporteur_export_json_exception_exportation(exporteur, mocker, exception):
     """
     Vérifie que la classe renvoie l'exception :class:`ExportationException` lorsque
     une erreur apparait durant l'exportation des données.
@@ -88,7 +105,7 @@ def test_exportateur_export_json_exception_exportation(exporteur, mocker, except
     with pytest.raises(ExportationException):
         exporteur.export_vers_json({})
 
-def test_exportateur_exportation_json_valide(exporteur, fichier_json):
+def test_exporteur_exportation_json_valide(exporteur, fichier_json):
     """
     Vérifie que la méthode ``export_vers_json`` exporte correctement les données
     vers une fichier.
