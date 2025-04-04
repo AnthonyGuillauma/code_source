@@ -3,7 +3,7 @@ name: Qualité code - LogBuster
 on:
   push:
     branches:
-      - refractor/lisibilite-code
+      - develop
 
 jobs:
   lint:
@@ -38,5 +38,5 @@ jobs:
       - name: Upload du rapport Pylint
         uses: actions/upload-artifact@v4
         with:
-          name: rapport-pylint
+          name: rapport-qualite-code
           path: tests-resultats-qualite.txt
