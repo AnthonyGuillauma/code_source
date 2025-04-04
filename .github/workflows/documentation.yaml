@@ -1,4 +1,4 @@
-name: Construction et déploiement de la configuration
+name: Documentation - LogBuster
 
 on:
   push:

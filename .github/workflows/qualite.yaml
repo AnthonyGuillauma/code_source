@@ -1,0 +1,32 @@
+name: Qualité code - LogBuster
+
+on:
+  push:
+    branches:
+      - refractor/lisibilite-code
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout du code
+        uses: actions/checkout@v4
+
+      - name: Configuration de Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Installation des dépendances
+        run: |
+          python -m pip install --upgrade pip
+          pip install pylint
+
+      - name: Analyse avec Pylint (note >= 9.0 requise)
+        run: |
+          SCORE=$(pylint app | grep "Your code has been rated at" | awk '{print $7}' | cut -d"/" -f1)
+          SCORE_NUM=$(echo "$SCORE >= 9.0" | bc)
+          if [ "$SCORE_NUM" -ne 1 ]; then
+            exit 1
+          fi
