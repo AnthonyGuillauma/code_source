@@ -40,14 +40,14 @@ class RequeteInformations:
         if not isinstance(self.horodatage, datetime):
             raise TypeError("L'horodatage doit être de type datetime.")
         # Vérification de la méthode HTTP
-        if self.methode_http != None and not isinstance(self.methode_http, str):
+        if self.methode_http is not None and not isinstance(self.methode_http, str):
             raise TypeError("La méthode HTTP doit être une chaine de caractère ou None.")
         # Vérification de la ressource demandée
-        if self.url != None and not isinstance(self.url, str):
+        if self.url is not None and not isinstance(self.url, str):
             raise TypeError("L'URL doit être une chaine de caractère ou None.")
         # Vérification du protocole HTTP
-        if self.protocole_http != None and not isinstance(self.protocole_http, str):
+        if self.protocole_http is not None and not isinstance(self.protocole_http, str):
             raise TypeError("Le protocole HTTP doit être une chaine de caractère ou None.")
         # Vérification de l'ancienne URL
-        if self.ancienne_url != None and not isinstance(self.ancienne_url, str):
+        if self.ancienne_url is not None and not isinstance(self.ancienne_url, str):
             raise TypeError("L'ancienne URL doit être une chaine de caractère ou None.")
