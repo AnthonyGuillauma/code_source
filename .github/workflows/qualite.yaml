@@ -26,11 +26,17 @@ jobs:
 
       - name: Analyse avec Pylint (note >= 9.0 requise)
         run: |
-          pylint app
-          SCORE=$(pylint app | grep "Your code has been rated at" | awk '{print $7}' | cut -d"/" -f1)
+          pylint app > tests-resultats-qualite.txt || true
+          SCORE=$(grep "Your code has been rated at" tests-resultats-qualite.txt | awk '{print $7}' | cut -d"/" -f1)
           echo "Le score du code dans le dossier app est de $SCORE"
           SCORE_VALIDE=$(echo "$SCORE >= 9.0" | bc)
           if [ "$SCORE_VALIDE" -ne 1 ]; then
             echo "Erreur: La note du code est inférieur à 9."
             exit 1
           fi
+      
+      - name: Upload du rapport Pylint
+        uses: actions/upload-artifact@v4
+        with:
+          name: rapport-pylint
+          path: tests-resultats-qualite.txt
