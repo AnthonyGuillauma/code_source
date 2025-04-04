@@ -26,7 +26,9 @@ jobs:
       - name: Analyse avec Pylint (note >= 9.0 requise)
         run: |
           SCORE=$(pylint app | grep "Your code has been rated at" | awk '{print $7}' | cut -d"/" -f1)
-          SCORE_NUM=$(echo "$SCORE >= 9.0" | bc)
-          if [ "$SCORE_NUM" -ne 1 ]; then
+          echo "Le score du code dans le dossier app est de $SCORE"
+          SCORE_VALIDE=$(echo "$SCORE >= 9.0" | bc)
+          if [ "$SCORE_VALIDE" -ne 1 ]; then
+            echo "Erreur: La note du code est inférieur à 9."
             exit 1
           fi
