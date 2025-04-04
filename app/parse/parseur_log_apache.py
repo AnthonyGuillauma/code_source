@@ -38,10 +38,10 @@ class ParseurLogApache():
             chemin_log (str): Le chemin du fichier à analyser.
 
         Raises:
-            FileNotFoundError: Si le fichier à analyser est introuvable.
+            FichierLogApacheIntrouvableException: Si le fichier à analyser est introuvable.
         """
         if not os.path.isfile(chemin_log):
-            raise FileNotFoundError(f"Le fichier {chemin_log} est introuvable.")
+            raise FichierLogApacheIntrouvableException(f"Le fichier {chemin_log} est introuvable.")
         self.chemin_log = chemin_log
 
     def parse_fichier(self):
@@ -202,10 +202,22 @@ class ParseurLogApache():
         valeur = analyse_regex.get(nom_information)
         return valeur if valeur not in ("", "-") else None
 
-class FormatLogApacheInvalideException(Exception):
+class ParsageLogApacheException(Exception):
+    """
+    Exception représentant une erreur lors du parsage du fichier
+    de log Apache.
+    """
+    def __init__(self, *args):
+        super().__init__(*args)
+
+class FichierLogApacheIntrouvableException(ParsageLogApacheException):
+    """
+    Exception représentant une erreur lorsque le fichier de log Apache
+    est introuvable.
+    """
+
+class FormatLogApacheInvalideException(ParsageLogApacheException):
     """
     Exception représentant une erreur dans le format du fichier
     de log Apache fourni.
     """
-    def __init__(self, *args):
-        super().__init__(*args)
