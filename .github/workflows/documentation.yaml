@@ -3,26 +3,30 @@ name: Documentation - LogBuster
 on:
   push:
     branches:
-      - develop
+      - main
 
+# Permissions (lecture et écriture sur la GitHub Page)
 permissions:
   contents: read
   pages: write
-  id-token: write  # Nécessaire pour déployer sur GitHub Pages
+  id-token: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
+      # Etape 1: Cloner le dépôt
       - name: Positionnement sur le dépôt
         uses: actions/checkout@v4
 
+      # Étape 2 : Installer Python
       - name: Mis en place de Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.x'
 
+      # Étape 3 : Installer les dépendances
       - name: Installation des dépendances
         run: |
           python -m pip install --upgrade pip
@@ -30,14 +34,16 @@ jobs:
           pip install sphinx_rtd_theme --break-system-packages
           pip install colorama
 
+      # Étape 4 : Générer la documentation
       - name: Construction de la documentation (avec Sphinx)
         run: |
           sphinx-build -b html docs/source docs/build/html
 
-      - name: Publication la documentation générée
+      # Étape 5 : Sauvegarder l'artefact (pour la GitHub Page)
+      - name: Sauvegarder la documentation
         uses: actions/upload-pages-artifact@v3
         with:
-          path: docs/build/html  # Dossier contenant la doc générée
+          path: docs/build/html
 
   deploy:
     needs: build
@@ -47,6 +53,7 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
+      # Déploiement de la documentation
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
