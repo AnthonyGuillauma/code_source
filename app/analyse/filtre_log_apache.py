@@ -18,7 +18,7 @@ class FiltreLogApache:
             pour pouvoir passer le filtre. Si sa valeur est ``None``, ce filtre ne sera
             pas appliqué.
     """
-    
+
     def __init__(self, filtre_adresse_ip: Optional[str], filtre_code_statut_http: Optional[int]):
         """
         Initalise le filtre à appliquer lors d'une analyse.
@@ -66,13 +66,13 @@ class FiltreLogApache:
         if self.adresse_ip is not None:
             if self.adresse_ip != entree.client.adresse_ip:
                 return False
-        # Application du filtre sur le code de statut http si activé  
+        # Application du filtre sur le code de statut http si activé
         if self.code_statut_htpp is not None:
             if self.code_statut_htpp != entree.reponse.code_statut_http:
                 return False
-            
+
         return True
-    
+
     def get_dict_filtres(self) -> dict:
         """
         Retourne le filtre sous forme d'un dictionnaire.

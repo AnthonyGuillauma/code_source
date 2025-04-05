@@ -146,7 +146,7 @@ class AnalyseurLogApache:
             int: Le nombre total d'entrées.
         """
         return len(self.fichier.entrees)
-    
+
     def get_total_entrees_filtre(self) -> int:
         """
         Retourne le nombre d'entrées qui ont passées le filtre dans le fichier.
