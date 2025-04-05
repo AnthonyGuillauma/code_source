@@ -37,12 +37,14 @@ class FiltreLogApache:
         # Vérification des paramètres
         if filtre_adresse_ip is not None and not isinstance(filtre_adresse_ip, str):
             raise TypeError("L'adresse IP dans un filtre doit être une chaîne de caractère.")
-        if filtre_code_statut_http is not None and not isinstance(filtre_code_statut_http, int):
+        if (filtre_code_statut_http is not None
+            and not isinstance(filtre_code_statut_http, int)
+            or isinstance(filtre_code_statut_http, bool)):
             raise TypeError("Un code de statut http dans un filtre doit être un entier.")
 
         # Ajout des filtres
         self.adresse_ip = filtre_adresse_ip
-        self.code_statut_htpp = filtre_code_statut_http
+        self.code_statut_http = filtre_code_statut_http
 
     def entree_passe_filtre(self, entree: EntreeLogApache) -> bool:
         """
@@ -67,8 +69,8 @@ class FiltreLogApache:
             if self.adresse_ip != entree.client.adresse_ip:
                 return False
         # Application du filtre sur le code de statut http si activé
-        if self.code_statut_htpp is not None:
-            if self.code_statut_htpp != entree.reponse.code_statut_http:
+        if self.code_statut_http is not None:
+            if self.code_statut_http != entree.reponse.code_statut_http:
                 return False
 
         return True
@@ -85,5 +87,5 @@ class FiltreLogApache:
         """
         return {
             "adresse_ip": self.adresse_ip,
-            "code_statut_http": self.code_statut_htpp
+            "code_statut_http": self.code_statut_http
         }
