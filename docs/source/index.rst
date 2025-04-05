@@ -62,7 +62,7 @@ Dans LogBuster, l'**IP de l'utilisateur** et la **Date et heure de la requête**
 Format combiné (Combined Log Format)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Le format étendu permet d'ajouter plus de détails sur chaque requête.
+Le format combiné permet d'ajouter plus de détails sur chaque requête.
 Voici un exemple de ligne de log avec ce format :
 
 ``127.0.0.1 - - [10/Oct/2025:13:55:36 +0000] "GET /index.html HTTP/1.1" 200 2326 "http://referrer.com" "Mozilla/5.0"``
