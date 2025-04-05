@@ -6,10 +6,26 @@ import pytest
 from re import match
 from datetime import datetime, timezone, timedelta
 from conftest import lignes_valides, lignes_invalides
-from parse.parseur_log_apache import ParseurLogApache, FormatLogApacheInvalideException
+from parse.parseur_log_apache import (ParseurLogApache, 
+                                      FormatLogApacheInvalideException,
+                                      FichierLogApacheIntrouvableException)
 
 
 # Tests unitaires
+
+def test_parseur_log_exception_type_invalide():
+    """
+    Vérifie que l'initialisation d'un ParseurLogApache renvoie une erreur lorsque le type
+    de son paramètre est invalide.
+
+    Scénarios testés:
+        - Paramètre ``chemin_log`` avec un mauvais type.
+
+    Asserts:
+        - Une exception :class:`TypeError` est levée.
+    """
+    with pytest.raises(TypeError):
+        ParseurLogApache(False)
 
 def test_parseur_log_exception_fichier_introuvable():
     """
@@ -22,7 +38,7 @@ def test_parseur_log_exception_fichier_introuvable():
     Asserts:
         - Une exception :class:`FileNotFoundError` est levée.
     """
-    with pytest.raises(FileNotFoundError):
+    with pytest.raises(FichierLogApacheIntrouvableException):
         parseur = ParseurLogApache("fichier/existe/pas.txt")
 
 @pytest.mark.parametrize("parseur_log_apache", [False], indirect=["parseur_log_apache"])
@@ -43,6 +59,24 @@ def test_parseur_log_exception_fichier_invalide(parseur_log_apache):
     """
     with pytest.raises(FormatLogApacheInvalideException):
         fichier = parseur_log_apache.parse_fichier()
+
+def test_parseur_log_exception_parse_entree_type_invalide(parseur_log_apache):
+    """
+    Vérifie que la méthode parse_entree renvoie une erreur lorsque le type
+    de son paramètre est invalide.
+
+    Scénarios testés:
+        - Paramètre ``entree`` avec un mauvais type.
+
+    Asserts:
+        - Une exception :class:`TypeError` est levée.
+
+    Args:
+        parseur_arguments_cli (ParseurArgumentsCLI): Fixture pour l'instance 
+            de la classe :class:`ParseurLogApache`.
+    """
+    with pytest.raises(TypeError):
+        parseur_log_apache.parse_entree(False)
 
 @pytest.mark.parametrize("ligne_invalide", lignes_invalides)
 def test_parseur_log_exception_entree_invalide(parseur_log_apache, ligne_invalide):
@@ -80,6 +114,32 @@ def test_parseur_log_nombre_entrees_valide(parseur_log_apache):
     """
     fichier_log = parseur_log_apache.parse_fichier()
     assert len(fichier_log.entrees) == len(lignes_valides)
+
+@pytest.mark.parametrize("analyse_regex, nom_information", [
+    (False, "Information"),
+    ({}, False)
+])
+def test_parseur_log_apache_exception_get_information_entree_type_invalide(
+        parseur_log_apache, analyse_regex, nom_information):
+    """
+    Vérifie que la méthode get_information_entree renvoie une erreur lorsque le type
+    d'un de ses paramètres est invalide.
+
+    Scénarios testés:
+        - Paramètre ``analyse_regex`` avec un mauvais type.
+        - Paramètre ``nom_information`` avec un mauvais type.
+
+    Asserts:
+        - Une exception :class:`TypeError` est levée.
+
+    Args:
+        parseur_arguments_cli (ParseurArgumentsCLI): Fixture pour l'instance 
+            de la classe :class:`ParseurLogApache`.
+        analyse_regex (any): L'analyse de l'entrée par un regex.
+        nom_informations (any): Nom de l'information à récupérer.
+    """
+    with pytest.raises(TypeError):
+        parseur_log_apache.get_information_entree(analyse_regex, nom_information)
 
 @pytest.mark.parametrize("nom_information, retour_attendu", [
     ("ip", "192.168.1.1"),
@@ -143,3 +203,57 @@ def test_parsage_entree_valide(parseur_log_apache):
     assert entree.requete.ancienne_url == "/home"
     assert entree.reponse.code_statut_http == 200
     assert entree.reponse.taille_octets == 532
+
+def test_parseur_log_exception_extraction_informations_client_type_invalide(parseur_log_apache):
+    """
+    Vérifie que la méthode _extraire_informations_client renvoie une erreur lorsque le type
+    de son paramètre est invalide.
+
+    Scénarios testés:
+        - Paramètre ``analyse_regex`` avec un mauvais type.
+
+    Asserts:
+        - Une exception :class:`TypeError` est levée.
+
+    Args:
+        parseur_arguments_cli (ParseurArgumentsCLI): Fixture pour l'instance 
+            de la classe :class:`ParseurLogApache`.
+    """
+    with pytest.raises(TypeError):
+        parseur_log_apache._extraire_informations_client(False)
+
+def test_parseur_log_exception_extraction_informations_requete_type_invalide(parseur_log_apache):
+    """
+    Vérifie que la méthode _extraire_informations_requete renvoie une erreur lorsque le type
+    de son paramètre est invalide.
+
+    Scénarios testés:
+        - Paramètre ``analyse_regex`` avec un mauvais type.
+
+    Asserts:
+        - Une exception :class:`TypeError` est levée.
+
+    Args:
+        parseur_arguments_cli (ParseurArgumentsCLI): Fixture pour l'instance 
+            de la classe :class:`ParseurLogApache`.
+    """
+    with pytest.raises(TypeError):
+        parseur_log_apache._extraire_informations_requete(False)
+
+def test_parseur_log_exception_extraction_informations_reponse_type_invalide(parseur_log_apache):
+    """
+    Vérifie que la méthode _extraire_informations_reponse renvoie une erreur lorsque le type
+    de son paramètre est invalide.
+
+    Scénarios testés:
+        - Paramètre ``analyse_regex`` avec un mauvais type.
+
+    Asserts:
+        - Une exception :class:`TypeError` est levée.
+
+    Args:
+        parseur_arguments_cli (ParseurArgumentsCLI): Fixture pour l'instance 
+            de la classe :class:`ParseurLogApache`.
+    """
+    with pytest.raises(TypeError):
+        parseur_log_apache._extraire_informations_reponse(False)

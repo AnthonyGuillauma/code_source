@@ -5,3 +5,4 @@ FichierLogApache
    :members:
    :show-inheritance:
    :undoc-members:
+   :exclude-members: chemin, entrees

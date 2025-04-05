@@ -27,22 +27,27 @@ class AnalyseurLogApache:
                 les statistiques des classements (tops). Par défaut, sa valeur est égale à ``3``.
 
         Raises:
-            TypeError: Si l'argument ``fichier_log_apache`` n'est pas une instance de :class:`FichierLogApache`
+            TypeError: Si l'argument ``fichier_log_apache`` n'est pas une instance 
+                de :class:`FichierLogApache`
                 ou si l'argument ``nombre_par_top`` n'est pas un entier.
             ValueError: Si l'argument ``nombre_par_top`` est inférieur à ``0``.
         """
+        # Vérification du type des paramètres
         if not isinstance(fichier_log_apache, FichierLogApache):
             raise TypeError("La représentation du fichier doit être de type FichierLogApache.")
         if not isinstance(nombre_par_top, int) or isinstance(nombre_par_top, bool):
             raise TypeError("Le nombre par top doit être un entier.")
+        # Vérification de la valeur du paramètre
         if nombre_par_top < 0:
             raise ValueError("Le nombre par top doit être supérieur ou égale à 0.")
+
+        # Ajout des données
         self.fichier = fichier_log_apache
         self.nombre_par_top = nombre_par_top
 
     def _get_repartition_elements(self,
-                          liste_elements: list, 
-                          nom_elements: str, 
+                          liste_elements: list,
+                          nom_elements: str,
                           mode_top_classement: bool = False) -> list:
         """
         Retourne le top 'n' des éléments qui apparaissent le plus dans la liste.
@@ -64,21 +69,25 @@ class AnalyseurLogApache:
                 :attr:`nombre_par_top` éléments, mais peut en contenir moins s'il y a moins 
                 de :attr:`nombre_par_top` éléments distincts.
         """
+        # Vérification du type des paramètres
         if not isinstance(liste_elements, list):
             raise TypeError("La liste des éléments doit être une instance du type list.")
         if not isinstance(nom_elements, str):
             raise TypeError("Le nom des éléments doit être une chaîne de caractères")
         if not isinstance(mode_top_classement, bool):
-            raise TypeError("L'indication de l'activation du mode 'top_classement' doi être un booléen.")
-        
+            raise TypeError("L'indication de l'activation du mode 'top_classement' "
+                "doit être un booléen.")
+
+        # Analyse de la liste
         total_elements = len(liste_elements)
         compteur_elements = Counter(liste_elements)
-        top_elements = compteur_elements.most_common(self.nombre_par_top if mode_top_classement else None)
+        top_elements = compteur_elements.most_common(self.nombre_par_top
+                                                     if mode_top_classement else None)
         return [
             {nom_elements: element, "total": total, "taux": total / total_elements * 100}
             for element, total in top_elements
         ]
-    
+
     def get_analyse_complete(self) -> dict:
         """
         Retourne l'analyse complète du fichier de log Apache.
@@ -88,7 +97,8 @@ class AnalyseurLogApache:
             - statistiques:
                         - requetes:
                             - top_urls: voir :meth:`get_top_urls`
-                            - repartition_code_statut_http: voir :meth:`get_total_par_code_statut_http`
+                            - repartition_code_statut_http: 
+                                voir :meth:`get_total_par_code_statut_http`
 
         Returns:
             dict: L'analyse sous forme d'un dictionnaire.
@@ -112,7 +122,7 @@ class AnalyseurLogApache:
             int: Le nombre total d'entrées.
         """
         return len(self.fichier.entrees)
-    
+
     def get_top_urls(self) -> list:
         """
         Retourne le top :attr:`nombre_par_top` des urls les plus demandées.
@@ -130,7 +140,7 @@ class AnalyseurLogApache:
             "url",
             True
         )
-    
+
     def get_total_par_code_statut_http(self) -> list:
         """
         Retourne la répartition des réponses par code de statut htpp retourné.

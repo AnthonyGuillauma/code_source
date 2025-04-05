@@ -7,8 +7,9 @@ from pathlib import Path
 from json import load
 from time import sleep
 from random import choice
-import colorama
 import threading
+import colorama
+
 
 class AfficheurCLI:
     """
@@ -51,7 +52,7 @@ class AfficheurCLI:
             "rayon_laser": elements_animations["rayons_laser"]
         }
 
-    def reecrire_ligne(self, message: str):
+    def reecrire_ligne(self, message: str) -> None:
         """
         Permet d'écrire des caractères par dessus la dernière ligne dans la
         ligne de commande.
@@ -68,11 +69,12 @@ class AfficheurCLI:
         # Validation du paramètre
         if not isinstance(message, str):
             raise TypeError("Le message pour la réécriture doit être une chaîne de caractères.")
+
         # Ecriture du message
         sys.stdout.write("\r" + self.COULEUR_MESSAGE_NORMAL + message)
         sys.stdout.flush()
 
-    def affiche_message(self, message: str):
+    def affiche_message(self, message: str) -> None:
         """
         Permet d'écrire un message commun dans la ligne de commande avec la bonne
         couleur.
@@ -89,10 +91,11 @@ class AfficheurCLI:
         # Validation du paramètre
         if not isinstance(message, str):
             raise TypeError("Le message doit être une chaîne de caractères.")
+
         # Ecriture du message
         print(self.COULEUR_MESSAGE_NORMAL + message, flush=True)
 
-    def affiche_erreur(self, message: str, exception: Exception):
+    def affiche_erreur(self, message: str, exception: Exception) -> None:
         """
         Permet d'écrire un message d'erreur dans la ligne de commande avec la bonne
         couleur.
@@ -113,10 +116,11 @@ class AfficheurCLI:
             raise TypeError("Le message d'erreur doit être une chaîne de caractères.")
         if not isinstance(exception, Exception):
             raise TypeError("L'exception à afficher doit être une instance de Exception.")
+
         # Ecriture du message
         print(self.COULEUR_MESSAGE_ERREUR + f"{message}\n{exception}", flush=True)
 
-    def lance_animation_chargement(self):
+    def lance_animation_chargement(self) -> None:
         """
         Lance une animation de chargement dans la ligne de commande via un thread non bloquant.
         Si l'animation de chargement est déjà en cours, cette méthode ne fait rien.
@@ -130,11 +134,12 @@ class AfficheurCLI:
             self._thread_chargement_termine.clear()
             self._thread_chargement_erreur.clear()
             # Initialisation du thread pour le chargement
-            self._thread_chargement = threading.Thread(target=self._animation_chargement, daemon=True)
+            self._thread_chargement = threading.Thread(target=self._animation_chargement,
+                                                       daemon=True)
             # Lancement du thread pour le chargement
             self._thread_chargement.start()
-        
-    def _animation_chargement(self):
+
+    def _animation_chargement(self) -> None:
         """
         Lance l'animation de chargement en boucle jusqu'à la demande d'arrêt via
         l'attribut :attr:`_thread_chargement_demande_arret`.
@@ -147,7 +152,7 @@ class AfficheurCLI:
         fantome_chargement = self._animations_actuelles["fantome"][0]
         signes_rayon_laser = self._animations_actuelles["rayon_laser"]
         couleurs = ["\033[91m", "\033[93m", "\033[94m", "\033[95m"] # Rouge, Jaune, Bleu, Magenta
-        
+
         # Eléments de l'animation de fin de chargement en cas de succès
         chasseur_gagne = self._animations_actuelles["chasseur"][2]
         fantome_perd = self._animations_actuelles["fantome"][1]
@@ -164,7 +169,7 @@ class AfficheurCLI:
         while not (self._thread_chargement_termine.is_set()
                    or self._thread_chargement_erreur.is_set()):
             # Arrête d'ajouter des caractères lorsque la chaîne est trop longue
-            if (index_boucle < 40):
+            if index_boucle < 40:
                 # Récupération de la prochaine couleur
                 couleur_courante = couleurs[(index_boucle % len(couleurs))]
                 # Récupération du prochain signe du rayon
@@ -172,22 +177,24 @@ class AfficheurCLI:
                 # Ajout du dernier signe avec la nouvelle couleur au rayon
                 rayon_laser += couleur_courante + signe_courant
                 # Réactualisation de l'animation de chargement
-                self.reecrire_ligne(f"{chasseur_chargement}{rayon_laser}\033[0m{fantome_chargement}")
+                self.reecrire_ligne(
+                    f"{chasseur_chargement}{rayon_laser}\033[0m{fantome_chargement}"
+                )
                 index_boucle += 1
             sleep(0.05)
 
         # Suppression de la ligne de chargement
         self.reecrire_ligne("\033[K")
         espace_rayon_laser = " " * index_boucle
-        if (self._thread_chargement_termine.is_set()):
+        if self._thread_chargement_termine.is_set():
             # Message d'animation terminée
             self.reecrire_ligne(f"{chasseur_gagne}{espace_rayon_laser}\033[0m{fantome_perd}\n")
-            self.affiche_message(f"Analyse terminée! We came, we saw, we logged it.")
+            self.affiche_message("Analyse terminée! We came, we saw, we logged it.")
         else:
             # Message d'animation erreur
             self.reecrire_ligne(f"{chasseur_perd}{espace_rayon_laser}\033[0m{fantome_gagne}\n")
 
-    def stop_animation_chargement(self, erreur: bool = False):
+    def stop_animation_chargement(self, erreur: bool = False) -> None:
         """
         Lance une demande d'arrêt au thread qui gère l'animation de chargement
         en cours. Si aucune animation n'est en cours, cette méthode ne fait rien.
@@ -198,6 +205,10 @@ class AfficheurCLI:
         Returns:
             None
         """
+        # Vérification du type du paramètre
+        if not isinstance(erreur, bool):
+            raise TypeError("L'indication d'une erreur doit être un booléan.")
+
         # Si le thread de chargement existe et est lancé
         if self._thread_chargement and self._thread_chargement.is_alive():
             # Lancement de la demade d'arrêt

@@ -36,6 +36,31 @@ arguments_invalides = [
 
 # Tests unitaires
 
+@pytest.mark.parametrize("args, namespace", [
+    (False, None),
+    (None, False)
+])
+def test_parseur_cli_exception_parse_args_type_invalide(parseur_arguments_cli, args, namespace):
+    """
+    Vérifie que la méthode parse_args renvoie une erreur lorsque le type
+    d'un de ses paramètres est invalide.
+
+    Scénarios testés:
+        - Paramètre ``args`` avec un mauvais type.
+        - Paramètre ``namespace`` avec un mauvais type.
+
+    Asserts:
+        - Une exception :class:`TypeError` est levée.
+
+    Args:
+        parseur_arguments_cli (ParseurArgumentsCLI): Fixture pour l'instance 
+            de la classe :class:`ParseurArgumentsCLI`.
+        args (Optional[list]): Une liste avec des arguments.
+        namespace (Optional[Namespace]): L'espace de nom où stocker les arguments.
+    """
+    with pytest.raises(TypeError):
+        parseur_arguments_cli.parse_args(args, namespace)
+
 @pytest.mark.parametrize("arguments", arguments_invalides)
 def test_parseur_cli_exception_argument_inconnu(parseur_arguments_cli, arguments):
     """

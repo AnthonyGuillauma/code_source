@@ -113,8 +113,8 @@ def parseur_log_apache(log_apache, request):
         ParseurLogApache: Une instance de la classe :class:`ParseurLogApache`.
     """
     if hasattr(request, "param") and request.param == False:
-        return ParseurLogApache(log_apache(False))
-    return ParseurLogApache(log_apache(True))
+        return ParseurLogApache(str(log_apache(False)))
+    return ParseurLogApache(str(log_apache(True)))
 
 @pytest.fixture()
 def fichier_log_apache(parseur_log_apache):
@@ -140,8 +140,8 @@ def entree_log_apache(fichier_log_apache):
     ``lignes_valides``.
 
     Args:
-        fichier_log_apache (FichierLogApache): Fixture pour l'instance 
-            de la classe :class:`FichierLogApache`.
+        fichier_log_apache (EntreeLogApache): Fixture pour l'instance 
+            de la classe :class:`EntreeLogApache`.
 
     Returns:
         EntreeLogApache: Une instance de la classe :class:`EntreeLogApache`.

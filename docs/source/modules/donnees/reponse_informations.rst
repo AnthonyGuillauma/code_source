@@ -5,3 +5,4 @@ ReponseInformations
    :members:
    :show-inheritance:
    :undoc-members:
+   :exclude-members: code_statut_http, taille_octets
