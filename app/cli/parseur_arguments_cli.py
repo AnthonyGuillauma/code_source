@@ -44,6 +44,18 @@ class ParseurArgumentsCLI(ArgumentParser):
             help="Fichier JSON où sera écrit l'analyse. Par défaut, un fichier avec le "
             "nom 'analyse-log-apache.json' dans le repertoire courant sera crée.",
         )
+        self.add_argument(
+            "-i",
+            "--ip",
+            type=str,
+            help="L'adresse IP que doivent avoir les entrées à analyser."
+        )
+        self.add_argument(
+            "-c",
+            "--code-statut-http",
+            type=int,
+            help="Le code de statut http que doivent avoir les entrées à analyser."
+        )
 
     def parse_args(self,
                    args: Optional[list] = None,

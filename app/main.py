@@ -4,6 +4,7 @@ Point d'entrée de l'application LogBuster !
 from cli.afficheur_cli import AfficheurCLI
 from cli.parseur_arguments_cli import ParseurArgumentsCLI, ArgumentCLIException
 from parse.parseur_log_apache import ParseurLogApache, ParsageLogApacheException
+from analyse.filtre_log_apache import FiltreLogApache
 from analyse.analyseur_log_apache import AnalyseurLogApache
 from export.exporteur import Exporteur, ExportationException
 
@@ -26,8 +27,10 @@ def main() -> None:
         # Analyse syntaxique du fichier log
         parseur_log = ParseurLogApache(arguments_cli.chemin_log)
         fichier_log = parseur_log.parse_fichier()
+        # Filtre à appliquer lors de l'analyse
+        filtre_log = FiltreLogApache(arguments_cli.ip, arguments_cli.code_statut_http)
         # Analyse statistique du fichier log
-        analyseur_log = AnalyseurLogApache(fichier_log)
+        analyseur_log = AnalyseurLogApache(fichier_log, filtre_log)
         analyse = analyseur_log.get_analyse_complete()
         # Exportation de l'analyse
         exporteur = Exporteur(arguments_cli.sortie)

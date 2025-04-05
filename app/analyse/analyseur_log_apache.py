@@ -4,6 +4,7 @@ Module pour l'analyse statistique d'un fichier log Apache.
 
 from collections import Counter
 from parse.fichier_log_apache import FichierLogApache
+from analyse.filtre_log_apache import FiltreLogApache
 
 
 class AnalyseurLogApache:
@@ -17,24 +18,29 @@ class AnalyseurLogApache:
             les statistiques des classements (tops).
     """
 
-    def __init__(self, fichier_log_apache: FichierLogApache, nombre_par_top: int = 3):
+    def __init__(self,
+                 fichier_log_apache: FichierLogApache,
+                 filtre: FiltreLogApache,
+                 nombre_par_top: int = 3):
         """
         Initialise un nouveau analysateur de fichier log Apache.
 
         Args:
             fichier_log_apache (FichierLogApache): Le fichier à analyser.
+            filtre (FiltreLogApache): Le filtre à appliquer dans l'analyse. Si une entrée ne
+                passe pas le filtre, elle ne sera pas pris en compte dans l'analyse.
             nombre_par_top (int): Le nombre maximal d'éléments à inclure dans
                 les statistiques des classements (tops). Par défaut, sa valeur est égale à ``3``.
 
         Raises:
-            TypeError: Si l'argument ``fichier_log_apache`` n'est pas une instance 
-                de :class:`FichierLogApache`
-                ou si l'argument ``nombre_par_top`` n'est pas un entier.
+            TypeError: Les paramètres ne sont pas du type attendu.
             ValueError: Si l'argument ``nombre_par_top`` est inférieur à ``0``.
         """
         # Vérification du type des paramètres
         if not isinstance(fichier_log_apache, FichierLogApache):
             raise TypeError("La représentation du fichier doit être de type FichierLogApache.")
+        if not isinstance(filtre, FiltreLogApache):
+            raise TypeError("Le filtre à appliquer aux entrées doit être de type FiltreLogApache.")
         if not isinstance(nombre_par_top, int) or isinstance(nombre_par_top, bool):
             raise TypeError("Le nombre par top doit être un entier.")
         # Vérification de la valeur du paramètre
@@ -43,7 +49,21 @@ class AnalyseurLogApache:
 
         # Ajout des données
         self.fichier = fichier_log_apache
+        self.filtre = filtre
         self.nombre_par_top = nombre_par_top
+
+    def _get_entrees_passent_filtre(self) -> list:
+        """
+        Retourne les entrées qui passent le filtre.
+
+        Returns:
+            list: La liste des entrées qui passent le filtre.
+        """
+        entrees_valides = []
+        for entree in self.fichier.entrees:
+            if self.filtre.entree_passe_filtre(entree):
+                entrees_valides.append(entree)
+        return entrees_valides
 
     def _get_repartition_elements(self,
                           liste_elements: list,
@@ -94,19 +114,23 @@ class AnalyseurLogApache:
 
         L'analyse suit la structure suivante :
             - chemin: chemin du fichier
+            - total_entrees: voir :meth:`get_total_entrees`
+            - filtre: filtre appliqué à l'analyse
             - statistiques:
-                        - requetes:
-                            - top_urls: voir :meth:`get_top_urls`
-                            - repartition_code_statut_http: 
-                                voir :meth:`get_total_par_code_statut_http`
+                - total_entrees_filtre: voir :meth:`get_total_entrees_filtre`
+                - requetes:
+                    - top_urls: voir :meth:`get_top_urls`
+                    - repartition_code_statut_http: voir :meth:`get_total_par_code_statut_http`
 
         Returns:
             dict: L'analyse sous forme d'un dictionnaire.
         """
         return {
             "chemin": self.fichier.chemin,
+            "total_entrees": self.get_total_entrees(),
+            "filtre": self.filtre.get_dict_filtre(),
             "statistiques": {
-                "total_entrees": self.get_total_entrees(),
+                "total_entrees_filtre": self.get_total_entrees_filtre(),
                 "requetes": {
                     "top_urls": self.get_top_urls(),
                     "repartition_code_statut_http": self.get_total_par_code_statut_http()
@@ -123,9 +147,19 @@ class AnalyseurLogApache:
         """
         return len(self.fichier.entrees)
 
+    def get_total_entrees_filtre(self) -> int:
+        """
+        Retourne le nombre d'entrées qui ont passées le filtre dans le fichier.
+
+        Returns:
+            int: Le nombre total d'entrées.
+        """
+        return len(self._get_entrees_passent_filtre())
+
     def get_top_urls(self) -> list:
         """
         Retourne le top :attr:`nombre_par_top` des urls les plus demandées.
+        Les entrées prisent en compte sont uniquement celles qui ont passées le filtre.
 
         Returns:
             list: Une liste de dictionnaires où chaque clé contient :
@@ -136,7 +170,7 @@ class AnalyseurLogApache:
                 La liste est triée dans l'ordre décroissant du nombre total d'apparitions.
         """
         return self._get_repartition_elements(
-            [entree.requete.url for entree in self.fichier.entrees],
+            [entree.requete.url for entree in self._get_entrees_passent_filtre()],
             "url",
             True
         )
@@ -144,6 +178,7 @@ class AnalyseurLogApache:
     def get_total_par_code_statut_http(self) -> list:
         """
         Retourne la répartition des réponses par code de statut htpp retourné.
+        Les entrées prisent en compte sont uniquement celles qui ont passées le filtre.
 
         Returns:
             list: Une liste de dictionnaires où chaque clé contient :
@@ -154,6 +189,6 @@ class AnalyseurLogApache:
                 La liste est triée dans l'ordre décroissant du nombre total d'apparitions.
         """
         return self._get_repartition_elements(
-            [entree.reponse.code_statut_http for entree in self.fichier.entrees],
+            [entree.reponse.code_statut_http for entree in self._get_entrees_passent_filtre()],
             "code"
         )
