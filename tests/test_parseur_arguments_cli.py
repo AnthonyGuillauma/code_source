@@ -196,3 +196,92 @@ def test_parseur_cli_verification_extention_chemin_sortie(parseur_arguments_cli)
     """
     with pytest.raises(ArgumentCLIException):
         parseur_arguments_cli.parse_args(args=["fichier.txt", "-s", "invalide.txt"])
+
+def test_parseur_cli_recuperation_chemin_sortie_defaut_valide(parseur_arguments_cli):
+    """
+    Vérifie que le chemin du fichier de sortie JSON par défaut est bien appliqué lorsque
+    aucun chemin de sortie n'est donné.
+
+    Scénarios testés:
+        - Demande de parsage avec aucun fichier de sortie indiqué.
+
+    Asserts:
+        - La bonne valeur par défaut pour le chemin de sortie à été appliquée.
+
+    Args:
+        parseur_arguments_cli (ParseurArgumentsCLI): Fixture pour l'instance 
+            de la classe :class:`ParseurArgumentsCLI`.
+    """
+    argument = parseur_arguments_cli.parse_args(args=["fichier.txt"])
+    assert argument.sortie == "./analyse-log-apache.json"
+
+@pytest.mark.parametrize("adresse_ip", [
+    ("127.0.0.1"), ("192.168.0.0"), ("10.0.0.8")
+])
+def test_parseur_cli_recuperation_filtre_adresse_ip_valide(parseur_arguments_cli, adresse_ip):
+    """
+    Vérifie que le filtre sur l'adresse IP fourni depuis la ligne de commande est bien
+    récupéré par le parseur.
+
+    Scénarios testés:
+        - Ajout d'un filtre sur l'adresse IP dans les arguments de la CLI.
+
+    Asserts:
+        - La valeur de l'adresse IP est bien récupérée et conforme à l'entrée.
+
+    Args:
+        parseur_arguments_cli (ParseurArgumentsCLI): Fixture pour l'instance 
+            de la classe :class:`ParseurArgumentsCLI`.
+        adresse_ip (str): Le filtre sur l'adresse IP.
+    """
+    arguments = parseur_arguments_cli.parse_args(args=["fichier.txt", "-i", adresse_ip])
+    assert arguments.ip == adresse_ip
+
+@pytest.mark.parametrize("code_statut_http", [
+    ("200"), ("302"), ("404")
+])
+def test_parseur_cli_recuperation_filtre_code_statut_http_valide(parseur_arguments_cli,
+                                                                 code_statut_http):
+    """
+    Vérifie que le filtre sur le code de statut http fourni depuis la ligne de commande est bien
+    récupéré par le parseur.
+
+    Scénarios testés:
+        - Ajout d'un filtre sur le code de statut http dans les arguments de la CLI.
+
+    Asserts:
+        - La valeur du code de statut http est bien récupérée et conforme à l'entrée.
+        - La valeur du code de statut http est bien convertie en entier.
+
+    Args:
+        parseur_arguments_cli (ParseurArgumentsCLI): Fixture pour l'instance 
+            de la classe :class:`ParseurArgumentsCLI`.
+        code_statut_http (str): Le filtre sur le code de statut http.
+    """
+    arguments = parseur_arguments_cli.parse_args(args=["fichier.txt", "-c", code_statut_http])
+    assert arguments.code_statut_http == int(code_statut_http)
+
+@pytest.mark.parametrize("code_statut_http_invalide", [
+    ("test"), ("invalide")
+])
+def test_parseur_cli_exception_recuperation_filtre_code_statut_http_invalide(
+    parseur_arguments_cli,
+    code_statut_http_invalide):
+    """
+    Vérifie qu'une erreur se produit lorsque le filtre sur le code de statut http n'est pas
+    convertisable en un entier.
+
+    Scénarios testés:
+        - Ajout d'un filtre sur le code de statut http invalide dans les arguments de la CLI.
+
+    Asserts:
+        - Une exception :class:`ArgumentCLIException` est levée.
+
+    Args:
+        parseur_arguments_cli (ParseurArgumentsCLI): Fixture pour l'instance 
+            de la classe :class:`ParseurArgumentsCLI`.
+        code_statut_http_invalide (str): Le filtre invalide sur le code de statut http.
+    """
+    with pytest.raises(ArgumentCLIException):
+        arguments = parseur_arguments_cli.parse_args(
+            args=["fichier.txt", "-c", code_statut_http_invalide])
