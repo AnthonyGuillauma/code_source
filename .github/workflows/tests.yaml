@@ -1,0 +1,53 @@
+name: Tests unitaires - LogBuster
+
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+
+# Permissions (lecture uniquement)
+permissions:
+  contents: read
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]  # Liste des versions de Python à tester
+
+    steps:
+      # Étape 1 : Cloner le dépôt
+      - name: Cloner le dépôt
+        uses: actions/checkout@v4
+
+      # Étape 2 : Installer Python
+      - name: Installer Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      # Étape 3 : Installer les dépendances
+      - name: Installer les dépendances
+        run: |
+          python -m pip install --upgrade pip
+          pip install colorama
+          pip install pytest
+          pip install pytest-cov
+          pip install pytest-mock
+
+      # Étape 4 : Lancer les tests unitaires
+      - name: Lancer les tests unitaires
+        run: |
+          cd tests
+          pytest --basetemp=resultats_pytest --verbose --cov=../app --cov-report=term-missing --cov-report=xml:resultats_pytest/tests-couverture.xml --junitxml=resultats_pytest/tests-rapport.xml
+
+      # Étape 5 : Sauvegarder les artefacts
+      - name: Sauvegarder les résultats de test
+        if: always()  # Sauvegarde même si les tests échouent
+        uses: actions/upload-artifact@v4
+        with:
+          if-no-files-found: error
+          name: rapport-tests-unitaires-python-${{ matrix.python-version }} # Nom de l'artefact
+          path: tests/resultats_pytest # Eléments à sauvegarder

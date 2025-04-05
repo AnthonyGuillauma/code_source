@@ -1,0 +1,23 @@
+# Environnement virtuel
+.venv/
+
+# Fichiers propres à Python
+*.pyc
+__pycache__/
+
+# Fichiers propres à VisualStudioCode
+.vscode/
+.idea/
+
+# Fichiers propres à Pytest
+.pytest_cache/
+
+# Fichiers propres à Coverage
+.coverage
+htmlcov/
+
+# Fichiers de la documentation sphinx
+docs/build/
+
+# Fichier de tests durant le développement
+analyse-log-apache.json

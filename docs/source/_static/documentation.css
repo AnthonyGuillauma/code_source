@@ -1,0 +1,4 @@
+/* Étendre le contenu principal sur toute la largeur */
+.wy-nav-content {
+    max-width: 100%;
+}
