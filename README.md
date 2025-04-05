@@ -57,7 +57,7 @@ pip install -r requirements.txt
 python app/main.py chemin_log [-s SORTIE]
 ```
 - `chemin_log` : Le chemin vers le fichier de log Apache à analyser.
-- `-s SORTIE` (optionnel) : Le chemin où sauvegarder les résultats de l'analyse. Si non spécifié, les résultats seront sauvegardés dans un fichier analyse-log-apache.json.
+- `-s SORTIE` (optionnel) : Le chemin où sauvegarder les résultats de l'analyse. Si non spécifié, les résultats seront sauvegardés dans un fichier `analyse-log-apache.json`.
 
 ## 📖 Documentation
 
