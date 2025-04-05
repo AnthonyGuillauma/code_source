@@ -61,7 +61,7 @@ python app/main.py chemin_log [-s SORTIE]
 
 ## 📖 Documentation
 
-La documentation complète du code du projet se situe [ici](anthonyguillauma.github.io/code_source/
+La documentation complète du code du projet se situe [ici](https://anthonyguillauma.github.io/code_source/
 ).
 
 Si vous souhaitez la générer vous même, suivez ces étapes :
