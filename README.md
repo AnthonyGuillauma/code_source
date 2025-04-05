@@ -19,6 +19,7 @@ Bienvenue dans le monde de LogBuster, l'outil ultime pour analyser, décortiquer
 - [👻 Fonctionnalités](#-fonctionnalités)
 - [📦 Installation](#-installation)
 - [🛠️ Utilisation de base](#️-utilisation-de-base)
+- [⚠️ Précautions](#️-précautions)
 - [📖 Documentation](#-documentation)
 - [🧪 Lancer les tests](#-lancer-les-tests)
 - [📜 Licence](#-licence)
@@ -58,6 +59,15 @@ python app/main.py chemin_log [-s SORTIE]
 ```
 - `chemin_log` : Le chemin vers le fichier de log Apache à analyser.
 - `-s SORTIE` (optionnel) : Le chemin où sauvegarder les résultats de l'analyse. Si non spécifié, les résultats seront sauvegardés dans un fichier `analyse-log-apache.json`.
+
+## ⚠️ Précautions
+
+Le projet LogBuster utilise des caractères Unicode, tels que des symboles spéciaux, dans le terminal pour rendre l'affichage plus plaisant. Assurez-vous que votre terminal est configuré pour prendre en charge l'affichage de caractères Unicode afin de profiter pleinement de l'expérience utilisateur.
+
+Si vous rencontrez des problèmes d'affichage (comme des symboles manquants ou mal rendus), vous pouvez essayer les solutions suivantes :
+
+- Utiliser un terminal compatible avec Unicode (par exemple, Terminal sous macOS, Windows Terminal sous Windows, ou des terminaux comme GNOME Terminal ou Konsole sous Linux).
+- Vérifier que votre terminal utilise une police qui prend en charge les caractères Unicode (par exemple, DejaVu Sans Mono ou Consolas).
 
 ## 📖 Documentation
 
