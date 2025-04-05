@@ -73,7 +73,7 @@ class FiltreLogApache:
 
         return True
 
-    def get_dict_filtres(self) -> dict:
+    def get_dict_filtre(self) -> dict:
         """
         Retourne le filtre sous forme d'un dictionnaire.
         Les clés représentent le champs d'une entrée et leur valeur la valeur

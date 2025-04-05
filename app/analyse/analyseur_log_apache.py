@@ -128,7 +128,7 @@ class AnalyseurLogApache:
         return {
             "chemin": self.fichier.chemin,
             "total_entrees": self.get_total_entrees(),
-            "filtre": self.filtre.get_dict_filtres(),
+            "filtre": self.filtre.get_dict_filtre(),
             "statistiques": {
                 "total_entrees_filtre": self.get_total_entrees_filtre(),
                 "requetes": {
