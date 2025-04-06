@@ -36,7 +36,7 @@ def main() -> None:
         exporteur.export_vers_json(analyse, "analyse-log-apache.json")
         # Exportation Camembert
         if arguments_cli.camembert:
-             exporteur.export_vers_html_camembert(
+            exporteur.export_vers_html_camembert(
                 analyseur_log.get_total_par_code_statut_http_camembert(),
                 "camembert-code_statut_http.html"
             )

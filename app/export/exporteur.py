@@ -62,7 +62,7 @@ class Exporteur:
                 dump(donnees, fichier, indent=4)
         except Exception as ex:
             raise ExportationJsonException(str(ex)) from ex
-    
+
     def export_vers_html_camembert(self,
                                      donnees: list,
                                      nom_fichier: str) -> None:

@@ -192,7 +192,7 @@ class AnalyseurLogApache:
             [entree.reponse.code_statut_http for entree in self._get_entrees_passent_filtre()],
             "code"
         )
-    
+
     def get_total_par_code_statut_http_camembert(self) -> list:
         """
         Retourne la répartition des réponses par code de statut http retourné sous
