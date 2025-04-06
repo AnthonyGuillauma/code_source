@@ -44,7 +44,7 @@ class Exporteur:
 
         Raises:
             TypeError: Le paramètre ``donnees`` n'est pas un dictionnaire.
-            ExportationException: Une erreur lors de l'écriture dans le fichier JSON.
+            ExportationJsonException: Une erreur lors de l'écriture dans le fichier JSON.
         """
         # Vérification du type des paramètres
         if not isinstance(donnees, dict):
@@ -61,7 +61,7 @@ class Exporteur:
             with open(chemin_fichier, 'w', encoding="utf-8") as fichier:
                 dump(donnees, fichier, indent=4)
         except Exception as ex:
-            raise ExportationException(str(ex)) from ex
+            raise ExportationJsonException(str(ex)) from ex
     
     def export_vers_html_camembert(self,
                                      donnees: list,
@@ -99,7 +99,7 @@ class Exporteur:
         axe_y = []
         for donnee in donnees:
             if not isinstance(donnee, list):
-                raise TypeError("La liste des données de l'histogramme à exporter ne doit "
+                raise ValueError("La liste des données de l'histogramme à exporter ne doit "
                     "contenir que des listes.")
             if not len(donnee) == 2:
                 raise ValueError("La liste des données de l'histogramme à exporter ne doit "
