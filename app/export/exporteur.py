@@ -67,10 +67,23 @@ class Exporteur:
                                      donnees: list,
                                      nom_fichier: str) -> None:
         """
-        Export la liste fournie vers un camember HTML vers le ``chemin de sortie``.
+        Export la liste fournie vers un camembert HTML vers le ``chemin de sortie``.
 
         Args:
+            donnees (list): Les données du camembert. La liste doit contenir
+                des listes de deux éléments où le premier reprèsente le nom de cette
+                partie du camembert et le deuxième sa valeur.
             nom_fichier (str): Le nom du fichier HTML.
+
+        Returns:
+            None
+
+        Raises:
+            TypeError: Les paramètres ne sont pas du type attendu ou la liste ``donnees``
+                contient un élément qui n'est pas une liste.
+            ValueError: Le paramètre ``nom_fichier`` ne termine pas par .html ou le paramètre
+                ``donnees`` ne contient pas des listes de longueur 2.
+            ExportationCamembertHtmlException: Erreur lors de l'exportation du camembert.
         """
         # Vérification du type des paramètres
         if not isinstance(donnees, list):
@@ -95,13 +108,17 @@ class Exporteur:
             axe_y.append(donnee[1])
         axes = DataFrame({"x": axe_x, "y": axe_y})
         # Exportation
-        chemin_fichier = join(self._chemin_sortie, nom_fichier)
-        camembert = Chart(axes).mark_arc().encode(
-            theta='y:Q',
-            color='x:N',
-            tooltip=['x:N', 'y:Q']
-        )
-        camembert.save(chemin_fichier)
+        try:
+            chemin_fichier = join(self._chemin_sortie, nom_fichier)
+            camembert = Chart(axes).mark_arc().encode(
+                theta='y:Q',
+                color='x:N',
+                tooltip=['x:N', 'y:Q']
+            )
+            camembert.save(chemin_fichier)
+        except Exception as ex:
+            raise ExportationCamembertHtmlException("Erreur lors de l'exportation "
+                f"du camembert {nom_fichier}.") from ex
 
 
 class ExportationException(Exception):
@@ -114,7 +131,7 @@ class ExportationJsonException(ExportationException):
     Représente une erreur lors de l'exportation de données vers un format JSON.
     """
 
-class ExportationHtmlHistogrammeException(ExportationException):
+class ExportationCamembertHtmlException(ExportationException):
     """
     Représente une erreur lors de l'exportation de données vers un histogramme
     au format HTML.

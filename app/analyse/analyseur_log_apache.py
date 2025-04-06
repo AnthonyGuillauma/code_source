@@ -177,7 +177,7 @@ class AnalyseurLogApache:
 
     def get_total_par_code_statut_http(self) -> list:
         """
-        Retourne la répartition des réponses par code de statut htpp retourné.
+        Retourne la répartition des réponses par code de statut http retourné.
         Les entrées prisent en compte sont uniquement celles qui ont passées le filtre.
 
         Returns:
@@ -194,6 +194,15 @@ class AnalyseurLogApache:
         )
     
     def get_total_par_code_statut_http_camembert(self) -> list:
+        """
+        Retourne la répartition des réponses par code de statut http retourné sous
+        un format utilisable par un camembert.
+        Les entrées prisent en compte sont uniquement celles qui ont passées le filtre.
+
+        Returns:
+            list: Une liste de liste de deux éléments où l'index 0 est le code et l'index 1
+                son total d'apparition.
+        """
         return [
             [stat["code"], stat["total"]]
             for stat in self.get_total_par_code_statut_http()
