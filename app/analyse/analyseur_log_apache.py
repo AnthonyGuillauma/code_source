@@ -2,6 +2,7 @@
 Module pour l'analyse statistique d'un fichier log Apache.
 """
 
+from os.path import abspath
 from collections import Counter
 from parse.fichier_log_apache import FichierLogApache
 from analyse.filtre_log_apache import FiltreLogApache
@@ -113,7 +114,7 @@ class AnalyseurLogApache:
         Retourne l'analyse complète du fichier de log Apache.
 
         L'analyse suit la structure suivante :
-            - chemin: chemin du fichier
+            - chemin: chemin absolu du fichier
             - total_entrees: voir :meth:`get_total_entrees`
             - filtre: filtre appliqué à l'analyse
             - statistiques:
@@ -126,7 +127,7 @@ class AnalyseurLogApache:
             dict: L'analyse sous forme d'un dictionnaire.
         """
         return {
-            "chemin": self.fichier.chemin,
+            "chemin": abspath(self.fichier.chemin),
             "total_entrees": self.get_total_entrees(),
             "filtre": self.filtre.get_dict_filtre(),
             "statistiques": {

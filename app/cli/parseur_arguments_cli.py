@@ -106,7 +106,7 @@ class ParseurArgumentsCLI(ArgumentParser):
 
         if not match(regex_chemin, arguments_parses.sortie):
             raise ArgumentCLIException(
-                "Le chemin du fichier de sortie doit uniquement contenir les caractères "
+                "Le chemin du dossier de sortie doit uniquement contenir les caractères "
                 "autorisés. Les caractères autorisés sont les minuscules, majuscules, "
                 "chiffres ou les caractères spéciaux suivants: _, \\, -, /."
             )
