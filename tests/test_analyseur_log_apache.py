@@ -3,6 +3,7 @@ Modules des tests unitaires pour l'analyse statistique d'un fichier de log Apach
 """
 
 import pytest
+from os.path import abspath
 from parse.fichier_log_apache import FichierLogApache
 from analyse.filtre_log_apache import FiltreLogApache
 from analyse.analyseur_log_apache import AnalyseurLogApache
@@ -324,7 +325,7 @@ def test_analyseur_get_analyse_complete_valide(analyseur_log_apache):
             de la classe :class:`AnalyseurLogApache`.
     """
     analyse = analyseur_log_apache.get_analyse_complete()
-    assert analyse["chemin"] == analyseur_log_apache.fichier.chemin
+    assert analyse["chemin"] == abspath(analyseur_log_apache.fichier.chemin)
     assert analyse["total_entrees"] == analyseur_log_apache.get_total_entrees()
     assert analyse["filtre"] == analyseur_log_apache.filtre.get_dict_filtre()
     statistiques = analyse["statistiques"]
