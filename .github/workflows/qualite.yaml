@@ -28,6 +28,7 @@ jobs:
           pip install pylint
           pip install colorama
           pip install altair
+          pip install pandas
 
       # Étape 4 : Lancement de l'analyse
       - name: Analyse avec Pylint (note >= 9.0 requise)
