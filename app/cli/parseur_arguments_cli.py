@@ -56,6 +56,11 @@ class ParseurArgumentsCLI(ArgumentParser):
             type=int,
             help="Le code de statut http que doivent avoir les entrées à analyser."
         )
+        self.add_argument(
+            "--camembert",
+            action="store_true",
+            help="Active la génération d'histogrammes pour les statistiques compatibles."
+        )
 
     def parse_args(self,
                    args: Optional[list] = None,

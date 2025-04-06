@@ -192,3 +192,9 @@ class AnalyseurLogApache:
             [entree.reponse.code_statut_http for entree in self._get_entrees_passent_filtre()],
             "code"
         )
+    
+    def get_total_par_code_statut_http_camembert(self) -> list:
+        return [
+            [stat["code"], stat["total"]]
+            for stat in self.get_total_par_code_statut_http()
+        ]

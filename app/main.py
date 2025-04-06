@@ -7,7 +7,6 @@ from parse.parseur_log_apache import ParseurLogApache, ParsageLogApacheException
 from analyse.filtre_log_apache import FiltreLogApache
 from analyse.analyseur_log_apache import AnalyseurLogApache
 from export.exporteur import Exporteur, ExportationException
-from datetime import datetime
 
 def main() -> None:
     """
@@ -32,9 +31,15 @@ def main() -> None:
         # Analyse statistique du fichier log
         analyseur_log = AnalyseurLogApache(fichier_log, filtre_log)
         analyse = analyseur_log.get_analyse_complete()
-        # Exportation de l'analyse
+        # Exportation JSON
         exporteur = Exporteur(arguments_cli.sortie)
         exporteur.export_vers_json(analyse, "analyse-log-apache.json")
+        # Exportation Camembert
+        if arguments_cli.camembert:
+             exporteur.export_vers_html_camembert(
+                analyseur_log.get_total_par_code_statut_http_camembert(),
+                "camembert-code_statut_http.html"
+            )
         # Termine l'animation de chargement
         afficheur_cli.stop_animation_chargement()
     except ArgumentCLIException as ex:

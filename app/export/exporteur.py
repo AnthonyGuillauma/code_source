@@ -4,6 +4,8 @@ Module pour l'exportation des données.
 
 from os.path import abspath, isdir, join
 from json import dump
+from altair import Chart
+from pandas import DataFrame
 
 
 class Exporteur:
@@ -61,23 +63,45 @@ class Exporteur:
         except Exception as ex:
             raise ExportationException(str(ex)) from ex
     
-    def export_vers_html_histogramme(self, donnees: list, nom_fichier: str) -> None:
+    def export_vers_html_camembert(self,
+                                     donnees: list,
+                                     nom_fichier: str) -> None:
         """
-        Export la liste fournie vers une image d'un histogramme vers le ``chemin de sortie``.
+        Export la liste fournie vers un camember HTML vers le ``chemin de sortie``.
 
         Args:
             nom_fichier (str): Le nom du fichier HTML.
         """
         # Vérification du type des paramètres
         if not isinstance(donnees, list):
-            raise TypeError("L'histogramme à exporter doit être sous une forme de liste.")
+            raise TypeError("Les données de l'histogramme à exporter doit être sous une forme "
+                "de liste.")
         if not isinstance(nom_fichier, str):
             raise TypeError("Le nom du fichier doit être une chaîne de caractère.")
         # Vérification du nom du fichier
         if not nom_fichier.endswith(".html"):
             raise ValueError("Le fichier HTML doit terminé par l'extention '.html'.")
+        # Récupération des axes du graphique
+        axe_x = []
+        axe_y = []
+        for donnee in donnees:
+            if not isinstance(donnee, list):
+                raise TypeError("La liste des données de l'histogramme à exporter ne doit "
+                    "contenir que des listes.")
+            if not len(donnee) == 2:
+                raise ValueError("La liste des données de l'histogramme à exporter ne doit "
+                    "contenir que des listes de deux éléments (x, y).")
+            axe_x.append(donnee[0])
+            axe_y.append(donnee[1])
+        axes = DataFrame({"x": axe_x, "y": axe_y})
         # Exportation
         chemin_fichier = join(self._chemin_sortie, nom_fichier)
+        camembert = Chart(axes).mark_arc().encode(
+            theta='y:Q',
+            color='x:N',
+            tooltip=['x:N', 'y:Q']
+        )
+        camembert.save(chemin_fichier)
 
 
 class ExportationException(Exception):
