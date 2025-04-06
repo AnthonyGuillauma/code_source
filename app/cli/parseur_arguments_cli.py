@@ -40,9 +40,9 @@ class ParseurArgumentsCLI(ArgumentParser):
             "-s",
             "--sortie",
             type=str,
-            default="./analyse-log-apache.json",
-            help="Fichier JSON où sera écrit l'analyse. Par défaut, un fichier avec le "
-            "nom 'analyse-log-apache.json' dans le repertoire courant sera crée.",
+            default="./",
+            help="Dossier où sera écrit l'analyse du fichier de log Apache. Par défaut,"
+                "sa valeur est le répertoire d'exécution du script.",
         )
         self.add_argument(
             "-i",
@@ -55,6 +55,11 @@ class ParseurArgumentsCLI(ArgumentParser):
             "--code-statut-http",
             type=int,
             help="Le code de statut http que doivent avoir les entrées à analyser."
+        )
+        self.add_argument(
+            "--camembert",
+            action="store_true",
+            help="Active la génération d'histogrammes pour les statistiques compatibles."
         )
 
     def parse_args(self,
@@ -104,11 +109,6 @@ class ParseurArgumentsCLI(ArgumentParser):
                 "Le chemin du fichier de sortie doit uniquement contenir les caractères "
                 "autorisés. Les caractères autorisés sont les minuscules, majuscules, "
                 "chiffres ou les caractères spéciaux suivants: _, \\, -, /."
-            )
-
-        if not arguments_parses.sortie.endswith(".json"):
-            raise ArgumentCLIException(
-                "Le fichier de sortie doit obligatoirement être un fichier au format json."
             )
 
         return arguments_parses

@@ -193,7 +193,7 @@ def fichier_json(tmp_path):
     return fichier_temp
 
 @pytest.fixture
-def exporteur(fichier_json):
+def exporteur(tmp_path):
     """
     Fixture pour initialiser un exportateur de données.
 
@@ -204,4 +204,4 @@ def exporteur(fichier_json):
     Returns:
         Exporteur: Une instance de la classe :class:`Exportateur`.
     """
-    return Exporteur(str(fichier_json))
+    return Exporteur(str(tmp_path))

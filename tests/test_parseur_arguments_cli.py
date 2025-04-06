@@ -22,9 +22,9 @@ chemins_invalides = [
 ]
 
 sorties_valides = [
-    "fichier.json",
-    "./fichier.json",
-    "C:/Users/fest/fichier.json"
+    "./",
+    "./dossier/",
+    "C:/Users/fest/dossier/"
 ]
 
 arguments_invalides = [
@@ -124,11 +124,11 @@ def test_parseur_cli_exception_chemin_log_invalide(parseur_arguments_cli, chemin
 @pytest.mark.parametrize("chemin_sortie", sorties_valides)
 def test_parseur_cli_recuperation_chemin_sortie_valide(parseur_arguments_cli, chemin_sortie):
     """
-    Vérifie que le chemin du fichier de sortie JSON fourni depuis la ligne de commande est bien
+    Vérifie que le chemin du dossier de sortie fourni depuis la ligne de commande est bien
     récupéré par le parseur.
 
     Scénarios testés:
-        - Demande de parsage d'un chemin de fichier de sortie.
+        - Demande de parsage d'un chemin de dossier de sortie.
 
     Asserts:
         - La valeur du chemin de sortie est bien récupérée et conforme à l'entrée.
@@ -144,11 +144,11 @@ def test_parseur_cli_recuperation_chemin_sortie_valide(parseur_arguments_cli, ch
 @pytest.mark.parametrize("chemin_sortie", chemins_invalides)
 def test_parseur_cli_exception_chemin_sortie_invalide(parseur_arguments_cli, chemin_sortie):
     """
-    Vérifie qu'une erreur est retournée lorsque le chemin du fichier de sortie fourni contient
+    Vérifie qu'une erreur est retournée lorsque le chemin du dossier de sortie fourni contient
     au moins un caractère non autorisé.
 
     Scénarios testés:
-        - Demande de parsage d'un chemin de fichier de sortie invalide.
+        - Demande de parsage d'un chemin du dossier de sortie invalide.
 
     Asserts:
         - Une exception :class:`ArgumentCLIException` est levée.
@@ -163,11 +163,11 @@ def test_parseur_cli_exception_chemin_sortie_invalide(parseur_arguments_cli, che
 
 def test_parseur_cli_recuperation_chemin_sortie_defaut_valide(parseur_arguments_cli):
     """
-    Vérifie que le chemin du fichier de sortie JSON par défaut est bien appliqué lorsque
-    aucun chemin de sortie n'est donné.
+    Vérifie que le chemin du dossier de sortie par défaut est bien appliqué lorsque
+    aucun dossier de sortie n'est donné.
 
     Scénarios testés:
-        - Demande de parsage avec aucun fichier de sortie indiqué.
+        - Demande de parsage avec aucun dossier de sortie indiqué.
 
     Asserts:
         - La bonne valeur par défaut pour le chemin de sortie à été appliquée.
@@ -177,43 +177,7 @@ def test_parseur_cli_recuperation_chemin_sortie_defaut_valide(parseur_arguments_
             de la classe :class:`ParseurArgumentsCLI`.
     """
     argument = parseur_arguments_cli.parse_args(args=["fichier.txt"])
-    assert argument.sortie == "./analyse-log-apache.json"
-
-def test_parseur_cli_verification_extention_chemin_sortie(parseur_arguments_cli):
-    """
-    Vérifie qu'une erreur est retournée lorsque le fichier de sortie fourni ne possède
-    pas l'extension '.json'.
-
-    Scénarios testés:
-        - Demande de parsage d'un fichier de sortie qui n'est pas un fichier .json.
-
-    Asserts:
-        - Une exception :class:`ArgumentCLIException` est levée.
-
-    Args:
-        parseur_arguments_cli (ParseurArgumentsCLI): Fixture pour l'instance 
-            de la classe :class:`ParseurArgumentsCLI`.
-    """
-    with pytest.raises(ArgumentCLIException):
-        parseur_arguments_cli.parse_args(args=["fichier.txt", "-s", "invalide.txt"])
-
-def test_parseur_cli_recuperation_chemin_sortie_defaut_valide(parseur_arguments_cli):
-    """
-    Vérifie que le chemin du fichier de sortie JSON par défaut est bien appliqué lorsque
-    aucun chemin de sortie n'est donné.
-
-    Scénarios testés:
-        - Demande de parsage avec aucun fichier de sortie indiqué.
-
-    Asserts:
-        - La bonne valeur par défaut pour le chemin de sortie à été appliquée.
-
-    Args:
-        parseur_arguments_cli (ParseurArgumentsCLI): Fixture pour l'instance 
-            de la classe :class:`ParseurArgumentsCLI`.
-    """
-    argument = parseur_arguments_cli.parse_args(args=["fichier.txt"])
-    assert argument.sortie == "./analyse-log-apache.json"
+    assert argument.sortie == "./"
 
 @pytest.mark.parametrize("adresse_ip", [
     ("127.0.0.1"), ("192.168.0.0"), ("10.0.0.8")
