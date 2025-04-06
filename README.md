@@ -63,7 +63,7 @@ python app/main.py chemin_log [-s SORTIE] [-i IP] [-c CODE_STATUT_HTTP] [--camem
 - `-s SORTIE` (optionnel) : Le chemin où sauvegarder les résultats de l'analyse. Si non spécifié, les résultats seront sauvegardés dans un fichier `analyse-log-apache.json`.
 - `-i IP` (optionnel) : Le filtre à appliquer sur les adresses IP des entrées du fichier de log. Uniquement les entrées avec cette adresse IP seront analysées.
 - `-c CODE_STATUT_HTTP` (optionnel) : Le filtre à appliquer sur les code de statut http des entrées du fichier de log. Uniquement les entrées avec ce code de statut http seront analysées.
-- `--camembert CAMEMBERT` (optionnel) : Active la génération de graphiques camemberts dans lors de l'analyse pour les statistiques compatibles (plus d'infos [ici](https://anthonyguillauma.github.io/code_source/#d-utilisation)).
+- `--camembert CAMEMBERT` (optionnel) : Active la génération de graphiques camemberts dans lors de l'analyse pour les statistiques compatibles (plus d'infos [ici](https://anthonyguillauma.github.io/code_source/#o-o-format-de-l-analyse)).
 
 ## ⚠️ Précautions
 
