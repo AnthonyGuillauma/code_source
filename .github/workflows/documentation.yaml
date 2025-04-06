@@ -33,6 +33,7 @@ jobs:
           pip install sphinx
           pip install sphinx_rtd_theme --break-system-packages
           pip install colorama
+          pip install altair
 
       # Étape 4 : Générer la documentation
       - name: Construction de la documentation (avec Sphinx)
