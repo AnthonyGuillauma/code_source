@@ -23,17 +23,56 @@ Grâce à LogBuster, vous pouvez extraire des informations essentielles, gérer 
 
 - **Extraire des statistiques clés** : Obtenez des données précieuses sur vos fichiers de logs.
 - **Exporter les données en JSON** : Accédez à un format structuré pour vos analyses.
+- **Exporter des graphiques** : Générez des graphiques de vos fichiers de logs.
+- **Filtrer les analyses** : Filtrez les analyses en toute simplicité.
 - **Gérer les erreurs de format avec précision** : Identifiez rapidement les anomalies et les erreurs de vos fichiers log.
 
 **d(■᎑■⌐) Utilisation**
 ---------------------------
 
 ```
-python app/main.py chemin_log [-s SORTIE]
+python app/main.py chemin_log [-s SORTIE] [-i IP] [-c CODE_STATUT_HTTP] [--camembert CAMEMBERT]
 ```
 
 - `chemin_log` : Le chemin vers le fichier de log Apache à analyser.
 - `-s SORTIE` (optionnel) : Le chemin où sauvegarder les résultats de l'analyse. Si non spécifié, les résultats seront sauvegardés dans un fichier `analyse-log-apache.json`.
+- `-i IP` (optionnel) : Le filtre à appliquer sur les adresses IP des entrées du fichier de log. Uniquement les entrées avec cette adresse IP seront analysées.
+- `-c CODE_STATUT_HTTP` (optionnel) : Le filtre à appliquer sur les code de statut http des entrées du fichier de log. Uniquement les entrées avec ce code de statut http seront analysées.
+- `--camembert CAMEMBERT` : (optionnel) : Active la génération de graphiques camemberts dans lors de l'analyse pour les statistiques compatibles. Les statistiques comptatibles.
+
+**(ò_ó)⊃ Format de l'analyse**
+--------------------------------
+
+Lors de l'analyse des fichiers de logs, LogBuster fait en sorte de regrouper les statistiques clés par catégories.
+
+Voici ci-dessous le format de l'analyse en JSON:
+
+            - chemin: chemin absolu du fichier
+            - total_entrees: nombre total d'entrées dans le fichier
+            - filtre: filtres appliqués à l'analyse
+               - adresse_ip: filtre sur l'adresse IP (None si désactivé)
+               - code_statut_http: filtre sur le code de statut http (None si désactivé)
+            - statistiques:
+               - total_entrees_filtre: nombre total d'entrées analysées
+               - requetes:
+                  - top_urls: top 3 des urls
+                     - dictionnaires contenant:
+                        - url: ressource demandée
+                        - total: nombre d'entrée avec cette ressource demandée
+                        - taux: pourcentage d'entrée avec cette ressource demandée
+               - reponses:
+                  - repartition_code_statut_http: répartition des codes de statut http
+                     - dictionnaires contenant:
+                        - code: code de statut http retourné
+                        - total: nombre d'entrée avec ce code de statut http retourné
+                        - taux: pourcentage d'entrée avec ce code de statut http retourné
+
+Pour les graphiques camemberts, un fichier HTML est généré avec ce graphique.
+Néanmoins, toutes les statistiques ne sont pas compatibles avec ce type d'affichage.
+
+Voici la liste des statistiques comptatibles avec les graphiques:
+
+- `repartition_code_statut_http` : Répartition des codes de statut HTTP. (nom: camembert-code_statut_http)
 
 **(ง'̀᎑'́)ง Format des fichier de log Apache**
 ------------------------------------------------
@@ -62,7 +101,7 @@ Dans LogBuster, l'**IP de l'utilisateur** et la **Date et heure de la requête**
 Format combiné (Combined Log Format)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Le format étendu permet d'ajouter plus de détails sur chaque requête.
+Le format combiné permet d'ajouter plus de détails sur chaque requête.
 Voici un exemple de ligne de log avec ce format :
 
 ``127.0.0.1 - - [10/Oct/2025:13:55:36 +0000] "GET /index.html HTTP/1.1" 200 2326 "http://referrer.com" "Mozilla/5.0"``

@@ -6,6 +6,7 @@ import pytest
 from cli.afficheur_cli import AfficheurCLI
 from cli.parseur_arguments_cli import ParseurArgumentsCLI
 from parse.parseur_log_apache import ParseurLogApache
+from analyse.filtre_log_apache import FiltreLogApache
 from analyse.analyseur_log_apache import AnalyseurLogApache
 from export.exporteur import Exporteur
 
@@ -148,21 +149,34 @@ def entree_log_apache(fichier_log_apache):
     """
     return fichier_log_apache.entrees[0]
 
+@pytest.fixture
+def filtre_log_apache():
+    """
+    Fixture pour initialiser un filtre de fichier de log Apache.
+    Par défaut, toutes les vérifications de ce filtre sont à ``None``.
+
+    Returns:
+        FiltreLogApache: Une instance de la classe :class:`FiltreLogApache`.
+    """
+    return FiltreLogApache(None, None)
+
 @pytest.fixture()
-def analyseur_log_apache(fichier_log_apache):
+def analyseur_log_apache(fichier_log_apache, filtre_log_apache):
     """
     Fixture pour initialiser un analyseur statistique de fichier de log Apache.
     Le fichier qu'analyse cet analyseur comprend par défaut les entrées parsées de la liste
-    ``lignes_valides``.
+    ``lignes_valides`` et toutes les vérifications de sont filtres sont à ``None``.
 
     Args:
         fichier_log_apache (FichierLogApache): Fixture pour l'instance 
             de la classe :class:`FichierLogApache`.
+        filtre_log_apache (FiltreLogApache): Fixture pour l'instance 
+            de la classe :class:`FiltreLogApache`.
 
     Returns:
         AnalyseurLogApache: Une instance de la classe :class:`AnalyseurLogApache`.
     """
-    return AnalyseurLogApache(fichier_log_apache)
+    return AnalyseurLogApache(fichier_log_apache, filtre_log_apache)
 
 @pytest.fixture
 def fichier_json(tmp_path):
@@ -179,7 +193,7 @@ def fichier_json(tmp_path):
     return fichier_temp
 
 @pytest.fixture
-def exporteur(fichier_json):
+def exporteur(tmp_path):
     """
     Fixture pour initialiser un exportateur de données.
 
@@ -190,4 +204,4 @@ def exporteur(fichier_json):
     Returns:
         Exporteur: Une instance de la classe :class:`Exportateur`.
     """
-    return Exporteur(str(fichier_json))
+    return Exporteur(str(tmp_path))

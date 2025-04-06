@@ -52,6 +52,8 @@ def test_main_succes(mocker):
         chemin_log="test.log"
     )
 
+    mocker.patch("main.FiltreLogApache")
+
     mock_parseur_log = mocker.patch("main.ParseurLogApache")
     mock_parseur_log.return_value.parse_fichier.return_value = mocker.MagicMock()
 
