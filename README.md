@@ -28,6 +28,8 @@ Bienvenue dans le monde de LogBuster, l'outil ultime pour analyser, décortiquer
 
 - 📄 Parsing avancé de logs Apache.
 - 📉 Extraire des statistiques clés.
+- 🥧 Génération de graphique camembert.
+- 🧽 Filtrer les analyses.
 - 🗂️ Ranger les données par catégorie.
 - 🧹 Indiquer les erreurs de format avec précision.
 - 🚚 Exporter les données en JSON.
@@ -39,7 +41,7 @@ Bienvenue dans le monde de LogBuster, l'outil ultime pour analyser, décortiquer
 git clone https://github.com/AnthonyGuillauma/code_source
 cd code_source
 python -m venv .venv
-source .venv/bin/activate  # Activation de l'environnement virtuel sous Bash
+source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
@@ -48,17 +50,20 @@ pip install -r requirements.txt
 git clone https://github.com/AnthonyGuillauma/code_source
 cd code_source
 python -m venv .venv
-.venv\Scripts\activate  # Activation de l'environnement virtuel sous Windows
+.venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
 ## 🛠️ Utilisation de base
 
 ```
-python app/main.py chemin_log [-s SORTIE]
+python app/main.py chemin_log [-s SORTIE] [-i IP] [-c CODE_STATUT_HTTP] [--camembert CAMEMBERT]
 ```
 - `chemin_log` : Le chemin vers le fichier de log Apache à analyser.
 - `-s SORTIE` (optionnel) : Le chemin où sauvegarder les résultats de l'analyse. Si non spécifié, les résultats seront sauvegardés dans un fichier `analyse-log-apache.json`.
+- `-i IP` (optionnel) : Le filtre à appliquer sur les adresses IP des entrées du fichier de log. Uniquement les entrées avec cette adresse IP seront analysées.
+- `-c CODE_STATUT_HTTP` (optionnel) : Le filtre à appliquer sur les code de statut http des entrées du fichier de log. Uniquement les entrées avec ce code de statut http seront analysées.
+- `--camembert CAMEMBERT` (optionnel) : Active la génération de graphique camembert dans lors de l'analyse pour les statistiques compatibles (plus d'infos [ici](https://https://anthonyguillauma.github.io/code_source/#d-utilisation)).
 
 ## ⚠️ Précautions
 
