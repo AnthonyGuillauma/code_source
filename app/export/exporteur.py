@@ -4,7 +4,7 @@ Module pour l'exportation des données.
 
 from os.path import abspath, isdir, join
 from json import dump
-from altair import Chart, Text, Theta, Color, vconcat
+from altair import Chart, Theta, Color
 from pandas import DataFrame
 
 
