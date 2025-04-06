@@ -14,6 +14,8 @@
 
 Bienvenue dans le monde de LogBuster, l'outil ultime pour analyser, décortiquer et sauver vos logs Apache des griffes du chaos. Vous avez des logs qui traînent, qui sont indéchiffrables ou tout simplement encombrants ? Pas de panique, LogBuster est là pour les attraper, les analyser et vous offrir des statistiques claires et précises, comme jamais auparavant !
 
+Le document de réflexion est disponible [ici](https://drive.google.com/file/d/1j_F8MizttT8etW3joW23XR5ZI5k-uNqB/view?usp=sharing).
+
 ## 📋 Table des matières
 
 - [👻 Fonctionnalités](#-fonctionnalités)
