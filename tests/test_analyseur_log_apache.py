@@ -218,6 +218,29 @@ def test_analyseur_repartition_code_statut_http_valide(analyseur_log_apache):
     assert repartition[1]["total"] == 1
     assert repartition[1]["taux"] == 20.0
 
+def test_analyseur_repartition_code_statut_http_camembert_valide(analyseur_log_apache):
+    """
+    Vérifie que ``get_total_par_code_statut_http_camembert`` retourne la répartition
+    correcte des codes HTTP.
+
+    Scénarios testés:
+        - Vérification du tri et des indexs des listes dans la liste.
+
+    Asserts:
+        - La liste est triée dans l'ordre attendu.
+        - Le nombre d'éléments dans le résultat correspond à celui attendu.
+        
+    Args:
+        analyseur_log_apache (AnalyseurLogApache): Fixture pour l'instance 
+            de la classe ParseurLogApache.
+    """
+    repartition = analyseur_log_apache.get_total_par_code_statut_http_camembert()
+    assert len(repartition) == 2
+    assert repartition[0][0] == 500
+    assert repartition[0][1] == 4
+    assert repartition[1][0] == 200
+    assert repartition[1][1] == 1
+
 @pytest.mark.parametrize("nombre_entrees", [
     (0), (3), (100)
 ])
