@@ -7,7 +7,7 @@ from parse.parseur_log_apache import ParseurLogApache, ParsageLogApacheException
 from analyse.filtre_log_apache import FiltreLogApache
 from analyse.analyseur_log_apache import AnalyseurLogApache
 from export.exporteur import Exporteur, ExportationException
-
+from datetime import datetime
 
 def main() -> None:
     """
@@ -34,7 +34,7 @@ def main() -> None:
         analyse = analyseur_log.get_analyse_complete()
         # Exportation de l'analyse
         exporteur = Exporteur(arguments_cli.sortie)
-        exporteur.export_vers_json(analyse)
+        exporteur.export_vers_json(analyse, "analyse-log-apache.json")
         # Termine l'animation de chargement
         afficheur_cli.stop_animation_chargement()
     except ArgumentCLIException as ex:
