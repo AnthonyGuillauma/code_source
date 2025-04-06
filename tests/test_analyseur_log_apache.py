@@ -332,6 +332,7 @@ def test_analyseur_get_analyse_complete_valide(analyseur_log_apache):
     assert statistiques["total_entrees_filtre"] == analyseur_log_apache.get_total_entrees_filtre()
     statistiques_requetes = statistiques["requetes"]
     assert statistiques_requetes["top_urls"] == analyseur_log_apache.get_top_urls()
-    assert (statistiques_requetes["repartition_code_statut_http"] 
+    statistiques_reponses = statistiques["reponses"]
+    assert (statistiques_reponses["repartition_code_statut_http"] 
             == analyseur_log_apache.get_total_par_code_statut_http())
     
