@@ -121,6 +121,7 @@ class AnalyseurLogApache:
                 - total_entrees_filtre: voir :meth:`get_total_entrees_filtre`
                 - requetes:
                     - top_urls: voir :meth:`get_top_urls`
+                - reponses:
                     - repartition_code_statut_http: voir :meth:`get_total_par_code_statut_http`
 
         Returns:
@@ -134,6 +135,8 @@ class AnalyseurLogApache:
                 "total_entrees_filtre": self.get_total_entrees_filtre(),
                 "requetes": {
                     "top_urls": self.get_top_urls(),
+                },
+                "reponses": {
                     "repartition_code_statut_http": self.get_total_par_code_statut_http()
                 }
             }
