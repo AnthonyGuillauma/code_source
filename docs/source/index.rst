@@ -41,7 +41,7 @@ python app/main.py chemin_log [-s SORTIE] [-i IP] [-c CODE_STATUT_HTTP] [--camem
 - `--camembert CAMEMBERT` : (optionnel) : Active la génération de graphiques camemberts dans lors de l'analyse pour les statistiques compatibles. Les statistiques comptatibles.
 
 **(ò_ó)⊃ Format de l'analyse**
-------------------------
+--------------------------------
 
 Lors de l'analyse des fichiers de logs, LogBuster fait en sorte de regrouper les statistiques clés par catégories.
 
