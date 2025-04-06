@@ -4,7 +4,7 @@ Module pour l'exportation des données.
 
 from os.path import abspath, isdir, join
 from json import dump
-from altair import Chart
+from altair import Chart, Text, Theta, Color, vconcat
 from pandas import DataFrame
 
 
@@ -110,15 +110,20 @@ class Exporteur:
         # Exportation
         try:
             chemin_fichier = join(self._chemin_sortie, nom_fichier)
-            camembert = Chart(axes).mark_arc().encode(
-                theta='y:Q',
-                color='x:N',
+            base = Chart(axes).encode(
+                theta=Theta(field="y", type="quantitative"),
+                color=Color(field="x", type="nominal"),
                 tooltip=['x:N', 'y:Q']
             )
-            camembert.save(chemin_fichier)
+            camembert = base.mark_arc(outerRadius=200)
+            graphique = (camembert).properties(
+                width=400,
+                height=400
+            )
+            graphique.save(chemin_fichier)
         except Exception as ex:
             raise ExportationCamembertHtmlException("Erreur lors de l'exportation "
-                f"du camembert {nom_fichier}.") from ex
+                f"du camembert {nom_fichier} {ex}.") from ex
 
 
 class ExportationException(Exception):
